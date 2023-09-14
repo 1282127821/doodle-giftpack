@@ -13,25 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.doodle.giftpack.client;
+package org.doodle.giftpack.server;
 
-import java.util.Map;
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Data
+@Builder
+@ToString
+@Setter
+@Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ConfigurationProperties(prefix = GiftPackClientProperties.PREFIX)
-public class GiftPackClientProperties {
-  public static final String PREFIX = "doodle.giftpack.client";
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = GiftPackServerPackEntity.COLLECTION)
+public class GiftPackServerPackEntity {
+  public static final String COLLECTION = "giftpack-packs";
 
-  Server server = new Server();
+  @MongoId String packId;
 
-  @Data
-  @FieldDefaults(level = AccessLevel.PRIVATE)
-  public static class Server {
-    Map<String, String> tags = Map.of("server-type", "giftpack");
-  }
+  long count;
+
+  String content;
 }

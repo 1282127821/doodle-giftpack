@@ -15,23 +15,13 @@
  */
 package org.doodle.giftpack.client;
 
-import java.util.Map;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.experimental.FieldDefaults;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.doodle.design.giftpack.GiftPackHashPageOps;
+import org.doodle.design.giftpack.GiftPackHashQueryOps;
+import org.doodle.design.giftpack.GiftPackPageOps;
+import org.doodle.design.giftpack.GiftPackQueryOps;
 
-@Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@ConfigurationProperties(prefix = GiftPackClientProperties.PREFIX)
-public class GiftPackClientProperties {
-  public static final String PREFIX = "doodle.giftpack.client";
-
-  Server server = new Server();
-
-  @Data
-  @FieldDefaults(level = AccessLevel.PRIVATE)
-  public static class Server {
-    Map<String, String> tags = Map.of("server-type", "giftpack");
-  }
-}
+public interface GiftPackClientRSocket
+    extends GiftPackQueryOps.RSocket,
+        GiftPackPageOps.RSocket,
+        GiftPackHashQueryOps.RSocket,
+        GiftPackHashPageOps.RSocket {}

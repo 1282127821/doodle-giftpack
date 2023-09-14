@@ -15,12 +15,73 @@
  */
 package org.doodle.giftpack.autoconfigure.server;
 
-import org.doodle.giftpack.server.GiftPackServerProperties;
+import org.doodle.broker.autoconfigure.client.BrokerClientAutoConfiguration;
+import org.doodle.giftpack.server.*;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-@AutoConfiguration
+@AutoConfiguration(after = BrokerClientAutoConfiguration.class)
 @ConditionalOnClass(GiftPackServerProperties.class)
 @EnableConfigurationProperties(GiftPackServerProperties.class)
-public class GiftPackServerAutoConfiguration {}
+@EnableMongoAuditing
+@EnableMongoRepositories(
+    basePackageClasses = {GiftPackServerPackRepo.class, GiftPackServerHashRepo.class})
+public class GiftPackServerAutoConfiguration {
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerMapper giftPackServerMapper() {
+    return new GiftPackServerMapper();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerPackService giftPackServerPackService(GiftPackServerPackRepo packRepo) {
+    return new GiftPackServerPackService(packRepo);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerHashService giftPackServerHashService(GiftPackServerHashRepo hashRepo) {
+    return new GiftPackServerHashService(hashRepo);
+  }
+
+  @AutoConfiguration
+  @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+  public static class ServletConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerPackServletController giftPackServerPackServletController() {
+      return new GiftPackServerPackServletController();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerHashServletController giftPackServerHashServletController() {
+      return new GiftPackServerHashServletController();
+    }
+  }
+
+  @AutoConfiguration
+  public static class RSocketConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerPackRSocketController giftPackServerPackRSocketController(
+        GiftPackServerPackService packService) {
+      return new GiftPackServerPackRSocketController(packService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerHashRSocketController giftPackServerHashRSocketController(
+        GiftPackServerHashService hashService) {
+      return new GiftPackServerHashRSocketController(hashService);
+    }
+  }
+}

@@ -13,25 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.doodle.giftpack.client;
+package org.doodle.giftpack.server;
 
-import java.util.Map;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@ConfigurationProperties(prefix = GiftPackClientProperties.PREFIX)
-public class GiftPackClientProperties {
-  public static final String PREFIX = "doodle.giftpack.client";
-
-  Server server = new Server();
-
-  @Data
-  @FieldDefaults(level = AccessLevel.PRIVATE)
-  public static class Server {
-    Map<String, String> tags = Map.of("server-type", "giftpack");
-  }
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
+public class GiftPackServerHashService {
+  GiftPackServerHashRepo hashRepo;
 }

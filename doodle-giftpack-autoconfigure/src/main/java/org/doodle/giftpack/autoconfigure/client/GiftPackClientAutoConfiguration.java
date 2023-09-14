@@ -15,12 +15,41 @@
  */
 package org.doodle.giftpack.autoconfigure.client;
 
-import org.doodle.giftpack.client.GiftPackClientProperties;
+import org.doodle.broker.client.BrokerClientRSocketRequester;
+import org.doodle.giftpack.client.*;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 @AutoConfiguration
 @ConditionalOnClass(GiftPackClientProperties.class)
 @EnableConfigurationProperties(GiftPackClientProperties.class)
-public class GiftPackClientAutoConfiguration {}
+public class GiftPackClientAutoConfiguration {
+
+  @AutoConfiguration
+  @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+  public static class ServletConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackClientServlet giftPackClientServlet(RestTemplate restTemplate) {
+      return new GiftPackClientServletImpl(restTemplate);
+    }
+  }
+
+  @AutoConfiguration
+  @ConditionalOnClass(BrokerClientRSocketRequester.class)
+  @ConditionalOnBean(BrokerClientRSocketRequester.class)
+  public static class RSocketConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackClientRSocket giftPackClientRSocket(
+        BrokerClientRSocketRequester requester, GiftPackClientProperties properties) {
+      return new BrokerGiftPackClientImpl(requester, properties);
+    }
+  }
+}
