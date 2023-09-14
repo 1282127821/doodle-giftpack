@@ -1,0 +1,3 @@
+= Doodle GiftPack
+
+Doodle 社区驱动贡献通用礼包业务服务组件。
