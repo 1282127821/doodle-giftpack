@@ -1,0 +1,3 @@
+org.doodle.giftpack.autoconfigure.client.GiftPackClientAutoConfiguration
+org.doodle.giftpack.autoconfigure.server.GiftPackServerAutoConfiguration
+org.doodle.giftpack.autoconfigure.vaadin.GiftPackVaadinAutoConfiguration

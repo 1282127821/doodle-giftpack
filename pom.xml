@@ -16,7 +16,14 @@
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
   <modules>
+    <module>doodle-giftpack-autoconfigure</module>
+    <module>doodle-giftpack-client-core</module>
     <module>doodle-giftpack-dependencies</module>
     <module>doodle-giftpack-parent</module>
+    <module>doodle-giftpack-server</module>
+    <module>doodle-giftpack-server-core</module>
+    <module>doodle-giftpack-starters</module>
+    <module>doodle-giftpack-vaadin</module>
+    <module>doodle-giftpack-vaadin-core</module>
   </modules>
 </project>
