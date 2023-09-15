@@ -37,4 +37,10 @@ public class GiftPackServerExceptions {
       super(cause);
     }
   }
+
+  static class Use extends RuntimeException {
+    public Use(Throwable cause) {
+      super(cause);
+    }
+  }
 }

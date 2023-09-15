@@ -23,4 +23,5 @@ public interface GiftPackClientServlet
         GiftPackPageOps.Servlet,
         GiftPackHashCreateOps.Servlet,
         GiftPackHashQueryOps.Servlet,
-        GiftPackHashPageOps.Servlet {}
+        GiftPackHashPageOps.Servlet,
+        GiftPackHashUseOps.Servlet {}

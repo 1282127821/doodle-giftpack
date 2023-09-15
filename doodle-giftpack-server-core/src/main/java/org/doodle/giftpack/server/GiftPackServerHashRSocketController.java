@@ -28,7 +28,8 @@ import reactor.core.publisher.Mono;
 public class GiftPackServerHashRSocketController
     implements GiftPackHashCreateOps.RSocket,
         GiftPackHashQueryOps.RSocket,
-        GiftPackHashPageOps.RSocket {
+        GiftPackHashPageOps.RSocket,
+        GiftPackHashUseOps.RSocket {
   GiftPackServerHashService hashService;
 
   @MessageMapping(GiftPackHashCreateOps.RSocket.CREATE_MAPPING)
@@ -65,5 +66,16 @@ public class GiftPackServerHashRSocketController
   Mono<GiftPackHashPageReply> onPageException(GiftPackServerExceptions.Page ignored) {
     return Mono.just(
         GiftPackHashPageReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
+  }
+
+  @MessageMapping(GiftPackHashUseOps.RSocket.USE_MAPPING)
+  @Override
+  public Mono<GiftPackHashUseReply> use(GiftPackHashUseRequest request) {
+    return Mono.empty();
+  }
+
+  @MessageExceptionHandler(GiftPackServerExceptions.Use.class)
+  Mono<GiftPackHashUseReply> onUseException(GiftPackServerExceptions.Use ignored) {
+    return Mono.just(GiftPackHashUseReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
   }
 }

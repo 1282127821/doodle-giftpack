@@ -21,10 +21,13 @@ import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.Result;
 import org.doodle.design.giftpack.GiftPackHashPageOps;
 import org.doodle.design.giftpack.GiftPackHashQueryOps;
+import org.doodle.design.giftpack.GiftPackHashUseOps;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackHashPageReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackHashQueryReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackHashUseReply;
 import org.doodle.design.giftpack.model.payload.request.GiftPackHashPageRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackHashQueryRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackHashUseRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +37,9 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GiftPackServerHashServletController
-    implements GiftPackHashQueryOps.Servlet, GiftPackHashPageOps.Servlet {
+    implements GiftPackHashQueryOps.Servlet,
+        GiftPackHashPageOps.Servlet,
+        GiftPackHashUseOps.Servlet {
 
   @PostMapping(GiftPackHashQueryOps.Servlet.QUERY_MAPPING)
   @Override
@@ -45,6 +50,12 @@ public class GiftPackServerHashServletController
   @PostMapping(GiftPackHashPageOps.Servlet.PAGE_MAPPING)
   @Override
   public Result<GiftPackHashPageReply> page(GiftPackHashPageRequest request) {
+    return Result.bad();
+  }
+
+  @PostMapping(GiftPackHashUseOps.Servlet.USE_MAPPING)
+  @Override
+  public Result<GiftPackHashUseReply> use(GiftPackHashUseRequest request) {
     return Result.bad();
   }
 

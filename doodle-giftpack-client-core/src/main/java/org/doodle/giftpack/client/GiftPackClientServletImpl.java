@@ -25,12 +25,14 @@ import org.doodle.design.giftpack.model.payload.reply.GiftPackCreateReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackHashCreateReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackHashPageReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackHashQueryReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackHashUseReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackPageReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackQueryReply;
 import org.doodle.design.giftpack.model.payload.request.GiftPackCreateRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackHashCreateRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackHashPageRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackHashQueryRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackHashUseRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackPageRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackQueryRequest;
 import org.springframework.core.ParameterizedTypeReference;
@@ -45,23 +47,37 @@ import org.springframework.web.client.RestTemplate;
 public class GiftPackClientServletImpl implements GiftPackClientServlet {
   RestTemplate restTemplate;
 
-  public static final ParameterizedTypeReference<Result<GiftPackHashPageReply>>
-      HASH_PAGE_RESPONSE_TYPE = new ParameterizedTypeReference<>() {};
+  static final ParameterizedTypeReference<Result<GiftPackHashUseReply>> HASH_USE_RESPONSE_TYPE =
+      new ParameterizedTypeReference<>() {};
 
-  public static final ParameterizedTypeReference<Result<GiftPackHashCreateReply>>
+  static final ParameterizedTypeReference<Result<GiftPackHashPageReply>> HASH_PAGE_RESPONSE_TYPE =
+      new ParameterizedTypeReference<>() {};
+
+  static final ParameterizedTypeReference<Result<GiftPackHashCreateReply>>
       HASH_CREATE_RESPONSE_TYPE = new ParameterizedTypeReference<>() {};
 
-  public static final ParameterizedTypeReference<Result<GiftPackHashQueryReply>>
-      HASH_QUERY_RESPONSE_TYPE = new ParameterizedTypeReference<>() {};
+  static final ParameterizedTypeReference<Result<GiftPackHashQueryReply>> HASH_QUERY_RESPONSE_TYPE =
+      new ParameterizedTypeReference<>() {};
 
-  public static final ParameterizedTypeReference<Result<GiftPackPageReply>>
-      PACK_PAGE_RESPONSE_TYPE = new ParameterizedTypeReference<>() {};
+  static final ParameterizedTypeReference<Result<GiftPackPageReply>> PACK_PAGE_RESPONSE_TYPE =
+      new ParameterizedTypeReference<>() {};
 
-  public static final ParameterizedTypeReference<Result<GiftPackQueryReply>>
-      PACK_QUERY_RESPONSE_TYPE = new ParameterizedTypeReference<>() {};
+  static final ParameterizedTypeReference<Result<GiftPackQueryReply>> PACK_QUERY_RESPONSE_TYPE =
+      new ParameterizedTypeReference<>() {};
 
-  public static final ParameterizedTypeReference<Result<GiftPackCreateReply>>
-      PACK_CREATE_RESPONSE_TYPE = new ParameterizedTypeReference<>() {};
+  static final ParameterizedTypeReference<Result<GiftPackCreateReply>> PACK_CREATE_RESPONSE_TYPE =
+      new ParameterizedTypeReference<>() {};
+
+  @Override
+  public Result<GiftPackHashUseReply> use(GiftPackHashUseRequest request) {
+    return this.restTemplate
+        .exchange(
+            GiftPackHashUseOps.Servlet.USE_MAPPING,
+            HttpMethod.POST,
+            new HttpEntity<>(request, createHttpHeaders()),
+            HASH_USE_RESPONSE_TYPE)
+        .getBody();
+  }
 
   @Override
   public Result<GiftPackHashPageReply> page(GiftPackHashPageRequest request) {
