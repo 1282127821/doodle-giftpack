@@ -79,7 +79,7 @@ public class BrokerGiftPackClientImpl implements GiftPackClientRSocket {
   }
 
   @Override
-  public Mono<GiftPackHashCreateReply> create(GiftPackHashCreateReply request) {
+  public Mono<GiftPackHashCreateReply> create(GiftPackHashCreateRequest request) {
     return route(GiftPackHashCreateOps.RSocket.CREATE_MAPPING)
         .data(request)
         .retrieveMono(GiftPackHashCreateReply.class);

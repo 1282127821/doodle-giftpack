@@ -34,7 +34,7 @@ public class GiftPackServerHashRSocketController
 
   @MessageMapping(GiftPackHashCreateOps.RSocket.CREATE_MAPPING)
   @Override
-  public Mono<GiftPackHashCreateReply> create(GiftPackHashCreateReply request) {
+  public Mono<GiftPackHashCreateReply> create(GiftPackHashCreateRequest request) {
     return Mono.empty();
   }
 
