@@ -28,8 +28,19 @@ import reactor.core.publisher.Mono;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GiftPackServerPackRSocketController
-    implements GiftPackQueryOps.RSocket, GiftPackPageOps.RSocket {
+    implements GiftPackCreateOps.RSocket, GiftPackQueryOps.RSocket, GiftPackPageOps.RSocket {
   GiftPackServerPackService packService;
+
+  @MessageMapping(GiftPackCreateOps.RSocket.CREATE_MAPPING)
+  @Override
+  public Mono<GiftPackCreateReply> create(GiftPackCreateRequest request) {
+    return Mono.empty();
+  }
+
+  @MessageExceptionHandler(GiftPackServerExceptions.Create.class)
+  Mono<GiftPackCreateReply> onCreateException(GiftPackServerExceptions.Create ignored) {
+    return Mono.just(GiftPackCreateReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
+  }
 
   @MessageMapping(GiftPackPageOps.RSocket.PAGE_MAPPING)
   @Override

@@ -15,13 +15,12 @@
  */
 package org.doodle.giftpack.client;
 
-import org.doodle.design.giftpack.GiftPackHashPageOps;
-import org.doodle.design.giftpack.GiftPackHashQueryOps;
-import org.doodle.design.giftpack.GiftPackPageOps;
-import org.doodle.design.giftpack.GiftPackQueryOps;
+import org.doodle.design.giftpack.*;
 
 public interface GiftPackClientRSocket
-    extends GiftPackQueryOps.RSocket,
+    extends GiftPackCreateOps.RSocket,
+        GiftPackQueryOps.RSocket,
         GiftPackPageOps.RSocket,
+        GiftPackHashCreateOps.RSocket,
         GiftPackHashQueryOps.RSocket,
         GiftPackHashPageOps.RSocket {}

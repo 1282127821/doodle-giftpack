@@ -15,13 +15,12 @@
  */
 package org.doodle.giftpack.client;
 
-import org.doodle.design.giftpack.GiftPackHashPageOps;
-import org.doodle.design.giftpack.GiftPackHashQueryOps;
-import org.doodle.design.giftpack.GiftPackPageOps;
-import org.doodle.design.giftpack.GiftPackQueryOps;
+import org.doodle.design.giftpack.*;
 
 public interface GiftPackClientServlet
-    extends GiftPackQueryOps.Servlet,
+    extends GiftPackCreateOps.Servlet,
+        GiftPackQueryOps.Servlet,
         GiftPackPageOps.Servlet,
+        GiftPackHashCreateOps.Servlet,
         GiftPackHashQueryOps.Servlet,
         GiftPackHashPageOps.Servlet {}

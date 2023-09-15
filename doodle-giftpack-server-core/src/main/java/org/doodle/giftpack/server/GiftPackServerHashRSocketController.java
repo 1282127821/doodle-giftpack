@@ -26,8 +26,22 @@ import reactor.core.publisher.Mono;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GiftPackServerHashRSocketController
-    implements GiftPackHashQueryOps.RSocket, GiftPackHashPageOps.RSocket {
+    implements GiftPackHashCreateOps.RSocket,
+        GiftPackHashQueryOps.RSocket,
+        GiftPackHashPageOps.RSocket {
   GiftPackServerHashService hashService;
+
+  @MessageMapping(GiftPackHashCreateOps.RSocket.CREATE_MAPPING)
+  @Override
+  public Mono<GiftPackHashCreateReply> create(GiftPackHashCreateReply request) {
+    return Mono.empty();
+  }
+
+  @MessageExceptionHandler(GiftPackServerExceptions.Create.class)
+  Mono<GiftPackHashCreateReply> onCreateException(GiftPackServerExceptions.Create ignored) {
+    return Mono.just(
+        GiftPackHashCreateReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
+  }
 
   @MessageMapping(GiftPackQueryOps.RSocket.QUERY_MAPPING)
   @Override

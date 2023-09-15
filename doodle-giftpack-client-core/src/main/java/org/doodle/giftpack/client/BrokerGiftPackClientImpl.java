@@ -51,6 +51,13 @@ public class BrokerGiftPackClientImpl implements GiftPackClientRSocket {
   }
 
   @Override
+  public Mono<GiftPackCreateReply> create(GiftPackCreateRequest request) {
+    return route(GiftPackCreateOps.RSocket.CREATE_MAPPING)
+        .data(request)
+        .retrieveMono(GiftPackCreateReply.class);
+  }
+
+  @Override
   public Mono<GiftPackHashPageReply> page(GiftPackHashPageRequest request) {
     return route(GiftPackHashPageOps.RSocket.PAGE_MAPPING)
         .data(request)
@@ -62,6 +69,13 @@ public class BrokerGiftPackClientImpl implements GiftPackClientRSocket {
     return route(GiftPackHashQueryOps.RSocket.QUERY_MAPPING)
         .data(request)
         .retrieveMono(GiftPackHashQueryReply.class);
+  }
+
+  @Override
+  public Mono<GiftPackHashCreateReply> create(GiftPackHashCreateReply request) {
+    return route(GiftPackHashCreateOps.RSocket.CREATE_MAPPING)
+        .data(request)
+        .retrieveMono(GiftPackHashCreateReply.class);
   }
 
   protected RSocketRequester.RequestSpec route(String route) {
