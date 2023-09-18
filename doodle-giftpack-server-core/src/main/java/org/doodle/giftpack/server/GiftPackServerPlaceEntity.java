@@ -17,6 +17,7 @@ package org.doodle.giftpack.server;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.doodle.design.giftpack.PackPlaceType;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -27,13 +28,15 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = GiftPackServerPackEntity.COLLECTION)
-public class GiftPackServerPackEntity {
-  public static final String COLLECTION = "giftpack-packs";
+@Document(collection = GiftPackServerPlaceEntity.COLLECTION)
+public class GiftPackServerPlaceEntity {
+  public static final String COLLECTION = "giftpack-places";
 
-  @MongoId String packId;
+  @MongoId GiftPackServerPlaceId id;
 
-  long count;
+  PackPlaceType type;
+
+  int quantity;
 
   String content;
 }

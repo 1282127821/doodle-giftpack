@@ -15,4 +15,6 @@
  */
 package org.doodle.giftpack.server;
 
-public class GiftPackServerMapper {}
+import org.doodle.design.giftpack.GiftPackMapper;
+
+public class GiftPackServerMapper extends GiftPackMapper {}

@@ -19,4 +19,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GiftPackServerHashRepo extends MongoRepository<GiftPackServerHashEntity, String> {}
+public interface GiftPackServerPlaceRepo
+    extends MongoRepository<GiftPackServerPlaceEntity, String> {}

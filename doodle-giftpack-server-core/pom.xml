@@ -26,6 +26,10 @@
     </dependency>
     <dependency>
       <groupId>org.doodle</groupId>
+      <artifactId>doodle-design-hashids</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.doodle</groupId>
       <artifactId>doodle-design-giftpack</artifactId>
     </dependency>
     <dependency>

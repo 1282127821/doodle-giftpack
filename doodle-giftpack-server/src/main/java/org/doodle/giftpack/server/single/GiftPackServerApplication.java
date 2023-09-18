@@ -15,12 +15,29 @@
  */
 package org.doodle.giftpack.server.single;
 
+import org.doodle.design.hashids.Hashids;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GiftPackServerApplication {
+public class GiftPackServerApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(GiftPackServerApplication.class, args);
+  }
+
+  @Override
+  public void run(String... args) throws Exception {
+    Hashids hashids =
+        new Hashids(
+            "Gk4CXuQAP7", 8, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+    for (int i = 0; i < 100000; i++) {
+      String encode = hashids.encode(101, 1, i);
+      System.out.println(encode);
+      long[] decode = hashids.decode(encode);
+      System.out.println("礼包ID: " + decode[0]);
+      System.out.println("批次: " + decode[1]);
+      System.out.println("计数: " + decode[2]);
+    }
   }
 }

@@ -31,7 +31,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableConfigurationProperties(GiftPackServerProperties.class)
 @EnableMongoAuditing
 @EnableMongoRepositories(
-    basePackageClasses = {GiftPackServerPackRepo.class, GiftPackServerHashRepo.class})
+    basePackageClasses = {GiftPackServerCodeRepo.class, GiftPackServerPlaceRepo.class})
 public class GiftPackServerAutoConfiguration {
 
   @Bean
@@ -40,48 +40,22 @@ public class GiftPackServerAutoConfiguration {
     return new GiftPackServerMapper();
   }
 
-  @Bean
-  @ConditionalOnMissingBean
-  public GiftPackServerPackService giftPackServerPackService(GiftPackServerPackRepo packRepo) {
-    return new GiftPackServerPackService(packRepo);
-  }
-
-  @Bean
-  @ConditionalOnMissingBean
-  public GiftPackServerHashService giftPackServerHashService(GiftPackServerHashRepo hashRepo) {
-    return new GiftPackServerHashService(hashRepo);
-  }
-
   @AutoConfiguration
   @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-  public static class ServletConfiguration {
-    @Bean
-    @ConditionalOnMissingBean
-    public GiftPackServerPackServletController giftPackServerPackServletController() {
-      return new GiftPackServerPackServletController();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public GiftPackServerHashServletController giftPackServerHashServletController() {
-      return new GiftPackServerHashServletController();
-    }
-  }
+  public static class ServletConfiguration {}
 
   @AutoConfiguration
   public static class RSocketConfiguration {
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerPackRSocketController giftPackServerPackRSocketController(
-        GiftPackServerPackService packService) {
-      return new GiftPackServerPackRSocketController(packService);
+    public GiftPackServerCodeRSocketController giftPackServerCodeRSocketController() {
+      return new GiftPackServerCodeRSocketController();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerHashRSocketController giftPackServerHashRSocketController(
-        GiftPackServerHashService hashService) {
-      return new GiftPackServerHashRSocketController(hashService);
+    public GiftPackServerPlaceRSocketController giftPackServerPlaceRSocketController() {
+      return new GiftPackServerPlaceRSocketController();
     }
   }
 }

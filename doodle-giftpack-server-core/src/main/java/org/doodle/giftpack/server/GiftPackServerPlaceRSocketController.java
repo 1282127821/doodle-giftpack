@@ -15,12 +15,26 @@
  */
 package org.doodle.giftpack.server;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
+import org.doodle.design.giftpack.*;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Mono;
 
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Controller
 @RequiredArgsConstructor
-public class GiftPackServerHashService {
-  GiftPackServerHashRepo hashRepo;
+public class GiftPackServerPlaceRSocketController
+    implements GiftPackPlaceQueryOps.RSocket, GiftPackPlacePageOps.RSocket {
+
+  @MessageMapping(GiftPackPlacePageOps.RSocket.PAGE_MAPPING)
+  @Override
+  public Mono<GiftPackPlacePageReply> page(GiftPackPlacePageRequest request) {
+    return Mono.empty();
+  }
+
+  @MessageMapping(GiftPackPlaceQueryOps.RSocket.QUERY_MAPPING)
+  @Override
+  public Mono<GiftPackPlaceQueryReply> query(GiftPackPlaceQueryRequest request) {
+    return Mono.empty();
+  }
 }

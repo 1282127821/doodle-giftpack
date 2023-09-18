@@ -15,25 +15,8 @@
  */
 package org.doodle.giftpack.server;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-@Builder
-@ToString
-@Setter
-@Getter
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor
-@NoArgsConstructor
-@Document(collection = GiftPackServerHashEntity.COLLECTION)
-public class GiftPackServerHashEntity {
-  public static final String COLLECTION = "giftpack-hashs";
-
-  @MongoId String hashId;
-
-  String packId;
-
-  long index;
-}
+@Repository
+public interface GiftPackServerCodeRepo extends MongoRepository<GiftPackServerCodeEntity, String> {}

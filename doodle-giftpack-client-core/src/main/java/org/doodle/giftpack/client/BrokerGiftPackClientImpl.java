@@ -37,52 +37,45 @@ public class BrokerGiftPackClientImpl implements GiftPackClientRSocket {
   }
 
   @Override
-  public Mono<GiftPackPageReply> page(GiftPackPageRequest request) {
-    return route(GiftPackPageOps.RSocket.PAGE_MAPPING)
+  public Mono<GiftPackCodeCreateReply> create(GiftPackCodeCreateRequest request) {
+    return route(GiftPackCodeCreateOps.RSocket.CREATE_MAPPING)
         .data(request)
-        .retrieveMono(GiftPackPageReply.class);
+        .retrieveMono(GiftPackCodeCreateReply.class);
   }
 
   @Override
-  public Mono<GiftPackQueryReply> query(GiftPackQueryRequest request) {
-    return route(GiftPackQueryOps.RSocket.QUERY_MAPPING)
+  public Mono<GiftPackCodePageReply> page(GiftPackCodePageRequest request) {
+    return route(GiftPackCodePageOps.RSocket.PAGE_MAPPING)
         .data(request)
-        .retrieveMono(GiftPackQueryReply.class);
+        .retrieveMono(GiftPackCodePageReply.class);
   }
 
   @Override
-  public Mono<GiftPackCreateReply> create(GiftPackCreateRequest request) {
-    return route(GiftPackCreateOps.RSocket.CREATE_MAPPING)
+  public Mono<GiftPackCodeQueryReply> query(GiftPackCodeQueryRequest request) {
+    return route(GiftPackCodeQueryOps.RSocket.QUERY_MAPPING)
         .data(request)
-        .retrieveMono(GiftPackCreateReply.class);
+        .retrieveMono(GiftPackCodeQueryReply.class);
   }
 
   @Override
-  public Mono<GiftPackHashUseReply> use(GiftPackHashUseRequest request) {
-    return route(GiftPackHashUseOps.RSocket.USE_MAPPING)
+  public Mono<GiftPackPlacePageReply> page(GiftPackPlacePageRequest request) {
+    return route(GiftPackPlacePageOps.RSocket.PAGE_MAPPING)
         .data(request)
-        .retrieveMono(GiftPackHashUseReply.class);
+        .retrieveMono(GiftPackPlacePageReply.class);
   }
 
   @Override
-  public Mono<GiftPackHashPageReply> page(GiftPackHashPageRequest request) {
-    return route(GiftPackHashPageOps.RSocket.PAGE_MAPPING)
+  public Mono<GiftPackPlaceQueryReply> query(GiftPackPlaceQueryRequest request) {
+    return route(GiftPackPlaceQueryOps.RSocket.QUERY_MAPPING)
         .data(request)
-        .retrieveMono(GiftPackHashPageReply.class);
+        .retrieveMono(GiftPackPlaceQueryReply.class);
   }
 
   @Override
-  public Mono<GiftPackHashQueryReply> query(GiftPackHashQueryRequest request) {
-    return route(GiftPackHashQueryOps.RSocket.QUERY_MAPPING)
+  public Mono<GiftPackUseReply> use(GiftPackUseRequest request) {
+    return route(GiftPackUseOps.RSocket.USE_MAPPING)
         .data(request)
-        .retrieveMono(GiftPackHashQueryReply.class);
-  }
-
-  @Override
-  public Mono<GiftPackHashCreateReply> create(GiftPackHashCreateRequest request) {
-    return route(GiftPackHashCreateOps.RSocket.CREATE_MAPPING)
-        .data(request)
-        .retrieveMono(GiftPackHashCreateReply.class);
+        .retrieveMono(GiftPackUseReply.class);
   }
 
   protected RSocketRequester.RequestSpec route(String route) {

@@ -15,8 +15,25 @@
  */
 package org.doodle.giftpack.server;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Repository
-public interface GiftPackServerPackRepo extends MongoRepository<GiftPackServerPackEntity, String> {}
+@Builder
+@ToString
+@Setter
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = GiftPackServerCodeEntity.COLLECTION)
+public class GiftPackServerCodeEntity {
+  public static final String COLLECTION = "giftpack-codes";
+
+  @MongoId String packCode;
+
+  int packId;
+
+  String content;
+}

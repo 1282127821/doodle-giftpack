@@ -15,12 +15,17 @@
  */
 package org.doodle.giftpack.server;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequiredArgsConstructor
-public class GiftPackServerPackService {
-  GiftPackServerPackRepo packRepo;
+@Builder
+@ToString
+@Setter
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+public class GiftPackServerPlaceId {
+  String packCode;
+  int batch;
 }
