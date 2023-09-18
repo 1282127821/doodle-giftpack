@@ -25,4 +25,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = GiftPackServerProperties.PREFIX)
 public class GiftPackServerProperties {
   public static final String PREFIX = "doodle.giftpack.server";
+
+  Hashids hashids = new Hashids();
+
+  @Data
+  @FieldDefaults(level = AccessLevel.PRIVATE)
+  public static class Hashids {
+    String salt = "DoodleGiftPack";
+    String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    int minHashLength = 6;
+  }
 }
