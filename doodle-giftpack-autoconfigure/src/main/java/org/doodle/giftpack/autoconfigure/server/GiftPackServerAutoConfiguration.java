@@ -42,7 +42,19 @@ public class GiftPackServerAutoConfiguration {
 
   @AutoConfiguration
   @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-  public static class ServletConfiguration {}
+  public static class ServletConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerCodeServletController giftPackServerCodeServletController() {
+      return new GiftPackServerCodeServletController();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerPlaceServletController giftPackServerPlaceServletController() {
+      return new GiftPackServerPlaceServletController();
+    }
+  }
 
   @AutoConfiguration
   public static class RSocketConfiguration {

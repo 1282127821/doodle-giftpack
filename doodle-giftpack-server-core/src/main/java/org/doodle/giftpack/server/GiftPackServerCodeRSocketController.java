@@ -17,6 +17,7 @@ package org.doodle.giftpack.server;
 
 import lombok.RequiredArgsConstructor;
 import org.doodle.design.giftpack.*;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Mono;
@@ -34,15 +35,33 @@ public class GiftPackServerCodeRSocketController
     return Mono.empty();
   }
 
+  @MessageExceptionHandler(GiftPackServerExceptions.Create.class)
+  Mono<GiftPackCodeCreateReply> onCreateException(GiftPackServerExceptions.Create ignored) {
+    return Mono.just(
+        GiftPackCodeCreateReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
+  }
+
   @MessageMapping(GiftPackCodePageOps.RSocket.PAGE_MAPPING)
   @Override
   public Mono<GiftPackCodePageReply> page(GiftPackCodePageRequest request) {
     return Mono.empty();
   }
 
+  @MessageExceptionHandler(GiftPackServerExceptions.Page.class)
+  Mono<GiftPackCodePageReply> onPageException(GiftPackServerExceptions.Page ignored) {
+    return Mono.just(
+        GiftPackCodePageReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
+  }
+
   @MessageMapping(GiftPackCodeQueryOps.RSocket.QUERY_MAPPING)
   @Override
   public Mono<GiftPackCodeQueryReply> query(GiftPackCodeQueryRequest request) {
     return Mono.empty();
+  }
+
+  @MessageExceptionHandler(GiftPackServerExceptions.Query.class)
+  Mono<GiftPackCodeQueryReply> onQueryException(GiftPackServerExceptions.Query ignored) {
+    return Mono.just(
+        GiftPackCodeQueryReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
   }
 }

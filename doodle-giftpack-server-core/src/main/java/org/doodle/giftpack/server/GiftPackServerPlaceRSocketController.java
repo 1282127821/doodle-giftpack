@@ -17,6 +17,7 @@ package org.doodle.giftpack.server;
 
 import lombok.RequiredArgsConstructor;
 import org.doodle.design.giftpack.*;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Mono;
@@ -32,9 +33,21 @@ public class GiftPackServerPlaceRSocketController
     return Mono.empty();
   }
 
+  @MessageExceptionHandler(GiftPackServerExceptions.Page.class)
+  Mono<GiftPackPlacePageReply> onPageException(GiftPackServerExceptions.Page ignored) {
+    return Mono.just(
+        GiftPackPlacePageReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
+  }
+
   @MessageMapping(GiftPackPlaceQueryOps.RSocket.QUERY_MAPPING)
   @Override
   public Mono<GiftPackPlaceQueryReply> query(GiftPackPlaceQueryRequest request) {
     return Mono.empty();
+  }
+
+  @MessageExceptionHandler(GiftPackServerExceptions.Query.class)
+  Mono<GiftPackPlaceQueryReply> onQueryException(GiftPackServerExceptions.Query ignored) {
+    return Mono.just(
+        GiftPackPlaceQueryReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
   }
 }
