@@ -37,6 +37,20 @@ public class BrokerGiftPackClientImpl implements GiftPackClientRSocket {
   }
 
   @Override
+  public Mono<GiftPackVisionPageReply> page(GiftPackVisionPageRequest request) {
+    return route(GiftPackVisionPageOps.RSocket.PAGE_MAPPING)
+        .data(request)
+        .retrieveMono(GiftPackVisionPageReply.class);
+  }
+
+  @Override
+  public Mono<GiftPackVisionQueryReply> query(GiftPackVisionQueryRequest request) {
+    return route(GiftPackVisionQueryOps.RSocket.QUERY_MAPPING)
+        .data(request)
+        .retrieveMono(GiftPackVisionQueryReply.class);
+  }
+
+  @Override
   public Mono<GiftPackCodePageReply> page(GiftPackCodePageRequest request) {
     return route(GiftPackCodePageOps.RSocket.PAGE_MAPPING)
         .data(request)
