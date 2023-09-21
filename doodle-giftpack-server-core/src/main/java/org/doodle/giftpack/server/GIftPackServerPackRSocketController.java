@@ -29,12 +29,18 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class GIftPackServerPackRSocketController
     implements GiftPackPackQueryOps.RSocket, GiftPackPackPageOps.RSocket {
+  GiftPackServerMapper mapper;
   GiftPackServerPackService packService;
 
   @MessageMapping(GiftPackPackPageOps.RSocket.PAGE_MAPPING)
   @Override
   public Mono<GiftPackPackPageReply> page(GiftPackPackPageRequest request) {
-    return Mono.empty();
+    return Mono.fromSupplier(request::getPage)
+        .map(mapper::fromProto)
+        .flatMap(packService::pageMono)
+        .map(mapper::toPackInfoList)
+        .map(mapper::toProto)
+        .onErrorMap(GiftPackServerExceptions.Page::new);
   }
 
   @MessageExceptionHandler(GiftPackServerExceptions.Page.class)
@@ -46,7 +52,11 @@ public class GIftPackServerPackRSocketController
   @MessageMapping(GiftPackPackQueryOps.RSocket.QUERY_MAPPING)
   @Override
   public Mono<GiftPackPackQueryReply> query(GiftPackPackQueryRequest request) {
-    return Mono.empty();
+    return Mono.fromSupplier(request::getPackCode)
+        .flatMap(packService::queryMono)
+        .map(mapper::toProto)
+        .map(mapper::toProto)
+        .onErrorMap(GiftPackServerExceptions.Query::new);
   }
 
   @MessageExceptionHandler(GiftPackServerExceptions.Query.class)

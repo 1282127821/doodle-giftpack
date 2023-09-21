@@ -107,29 +107,29 @@ public class GiftPackServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GiftPackServerVisionRSocketController giftPackServerVisionRSocketController(
-        GiftPackServerVisionService visionService) {
-      return new GiftPackServerVisionRSocketController(visionService);
+        GiftPackServerMapper mapper, GiftPackServerVisionService visionService) {
+      return new GiftPackServerVisionRSocketController(mapper, visionService);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public GiftPackServerGiftRSocketController giftPackServerGiftRSocketController(
-        GiftPackServerGiftService giftService) {
-      return new GiftPackServerGiftRSocketController(giftService);
+        GiftPackServerMapper mapper, GiftPackServerGiftService giftService) {
+      return new GiftPackServerGiftRSocketController(mapper, giftService);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public GiftPackServerCodeRSocketController giftPackServerCodeRSocketController(
-        GiftPackServerCodeService codeService) {
-      return new GiftPackServerCodeRSocketController(codeService);
+        GiftPackServerMapper mapper, GiftPackServerCodeService codeService) {
+      return new GiftPackServerCodeRSocketController(mapper, codeService);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public GIftPackServerPackRSocketController gIftPackServerPackRSocketController(
-        GiftPackServerPackService packService) {
-      return new GIftPackServerPackRSocketController(packService);
+        GiftPackServerMapper mapper, GiftPackServerPackService packService) {
+      return new GIftPackServerPackRSocketController(mapper, packService);
     }
   }
 }

@@ -15,12 +15,33 @@
  */
 package org.doodle.giftpack.server;
 
+import java.util.Collections;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.doodle.design.common.model.PageRequest;
+import org.doodle.design.giftpack.model.info.GiftInfo;
+import reactor.core.publisher.Mono;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GiftPackServerGiftService {
   GiftPackServerGiftRepo giftRepo;
+
+  public Mono<List<GiftInfo>> pageMono(PageRequest request) {
+    return Mono.fromCallable(() -> page(request));
+  }
+
+  public List<GiftInfo> page(PageRequest request) {
+    return Collections.emptyList();
+  }
+
+  public Mono<GiftInfo> queryMono(String giftId) {
+    return Mono.fromCallable(() -> query(giftId));
+  }
+
+  private GiftInfo query(String giftId) {
+    return null;
+  }
 }
