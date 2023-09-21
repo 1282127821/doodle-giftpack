@@ -13,18 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.doodle.gitftpack.vaadin;
+package org.doodle.giftpack.vaadin.views;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.experimental.FieldDefaults;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.RolesAllowed;
+import org.doodle.boot.vaadin.views.VaadinMainLayout;
 
-@Data
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@ConfigurationProperties(prefix = GiftPackVaadinProperties.PREFIX)
-public class GiftPackVaadinProperties {
-  public static final String PREFIX = "doodle.giftpack.vaadin";
-
-  public static final String PREFIX_VIEWS = "org.doodle.giftpack.vaadin.views";
-}
+@RolesAllowed({"ROLE_ADMIN", "ROLE_GIFTPACK_ADMIN"})
+@Route(value = "giftpack-pack", layout = VaadinMainLayout.class)
+public class GiftPackVaadinPackView extends VerticalLayout {}

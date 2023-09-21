@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.doodle.gitftpack.vaadin.views;
+package org.doodle.giftpack.vaadin.views;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 import org.doodle.boot.vaadin.views.VaadinMainLayout;
 
-@RolesAllowed("GIFTPACK_ADMIN")
-@Route(value = "giftpack", layout = VaadinMainLayout.class)
-public class GiftPackVaadinView extends VerticalLayout {}
+@RolesAllowed({"ROLE_ADMIN", "ROLE_GIFTPACK_ADMIN"})
+@Route(value = "giftpack-vision", layout = VaadinMainLayout.class)
+public class GiftPackVaadinVisionView extends VerticalLayout {}
