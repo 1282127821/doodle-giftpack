@@ -15,17 +15,8 @@
  */
 package org.doodle.giftpack.server;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-@Builder
-@ToString
-@Setter
-@Getter
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor
-@NoArgsConstructor
-public class GiftPackServerPlaceId {
-  String packCode;
-  int batch;
-}
+@Repository
+public interface GiftPackServerGiftRepo extends MongoRepository<GiftPackServerGiftEntity, String> {}

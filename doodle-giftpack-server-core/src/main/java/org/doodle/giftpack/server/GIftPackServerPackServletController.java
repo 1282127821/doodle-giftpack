@@ -17,29 +17,29 @@ package org.doodle.giftpack.server;
 
 import lombok.RequiredArgsConstructor;
 import org.doodle.design.common.Result;
-import org.doodle.design.giftpack.GiftPackCodePageOps;
-import org.doodle.design.giftpack.GiftPackCodeQueryOps;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackCodePageReply;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackCodeQueryReply;
-import org.doodle.design.giftpack.model.payload.request.GiftPackCodePageRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackCodeQueryRequest;
+import org.doodle.design.giftpack.GiftPackPackPageOps;
+import org.doodle.design.giftpack.GiftPackPackQueryOps;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackPackPageReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackPackQueryReply;
+import org.doodle.design.giftpack.model.payload.request.GiftPackPackPageRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackPackQueryRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class GiftPackServerCodeServletController
-    implements GiftPackCodeQueryOps.Servlet, GiftPackCodePageOps.Servlet {
+public class GIftPackServerPackServletController
+    implements GiftPackPackQueryOps.Servlet, GiftPackPackPageOps.Servlet {
 
-  @PostMapping(GiftPackCodePageOps.Servlet.PAGE_MAPPING)
+  @PostMapping(GiftPackPackPageOps.Servlet.PAGE_MAPPING)
   @Override
-  public Result<GiftPackCodePageReply> page(GiftPackCodePageRequest request) {
+  public Result<GiftPackPackPageReply> page(GiftPackPackPageRequest request) {
     return Result.bad();
   }
 
-  @PostMapping(GiftPackCodeQueryOps.Servlet.QUERY_MAPPING)
+  @PostMapping(GiftPackPackQueryOps.Servlet.QUERY_MAPPING)
   @Override
-  public Result<GiftPackCodeQueryReply> query(GiftPackCodeQueryRequest request) {
+  public Result<GiftPackPackQueryReply> query(GiftPackPackQueryRequest request) {
     return Result.bad();
   }
 }

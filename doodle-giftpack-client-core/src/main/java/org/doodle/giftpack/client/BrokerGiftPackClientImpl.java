@@ -37,13 +37,6 @@ public class BrokerGiftPackClientImpl implements GiftPackClientRSocket {
   }
 
   @Override
-  public Mono<GiftPackCodeCreateReply> create(GiftPackCodeCreateRequest request) {
-    return route(GiftPackCodeCreateOps.RSocket.CREATE_MAPPING)
-        .data(request)
-        .retrieveMono(GiftPackCodeCreateReply.class);
-  }
-
-  @Override
   public Mono<GiftPackCodePageReply> page(GiftPackCodePageRequest request) {
     return route(GiftPackCodePageOps.RSocket.PAGE_MAPPING)
         .data(request)
@@ -58,24 +51,31 @@ public class BrokerGiftPackClientImpl implements GiftPackClientRSocket {
   }
 
   @Override
-  public Mono<GiftPackPlacePageReply> page(GiftPackPlacePageRequest request) {
-    return route(GiftPackPlacePageOps.RSocket.PAGE_MAPPING)
+  public Mono<GiftPackGiftPageReply> page(GiftPackGiftPageRequest request) {
+    return route(GiftPackGiftPageOps.RSocket.PAGE_MAPPING)
         .data(request)
-        .retrieveMono(GiftPackPlacePageReply.class);
+        .retrieveMono(GiftPackGiftPageReply.class);
   }
 
   @Override
-  public Mono<GiftPackPlaceQueryReply> query(GiftPackPlaceQueryRequest request) {
-    return route(GiftPackPlaceQueryOps.RSocket.QUERY_MAPPING)
+  public Mono<GiftPackGiftQueryReply> query(GiftPackGiftQueryRequest request) {
+    return route(GiftPackGiftQueryOps.RSocket.QUERY_MAPPING)
         .data(request)
-        .retrieveMono(GiftPackPlaceQueryReply.class);
+        .retrieveMono(GiftPackGiftQueryReply.class);
   }
 
   @Override
-  public Mono<GiftPackUseReply> use(GiftPackUseRequest request) {
-    return route(GiftPackUseOps.RSocket.USE_MAPPING)
+  public Mono<GiftPackPackPageReply> page(GiftPackPackPageRequest request) {
+    return route(GiftPackPackPageOps.RSocket.PAGE_MAPPING)
         .data(request)
-        .retrieveMono(GiftPackUseReply.class);
+        .retrieveMono(GiftPackPackPageReply.class);
+  }
+
+  @Override
+  public Mono<GiftPackPackQueryReply> query(GiftPackPackQueryRequest request) {
+    return route(GiftPackCodeQueryOps.RSocket.QUERY_MAPPING)
+        .data(request)
+        .retrieveMono(GiftPackPackQueryReply.class);
   }
 
   protected RSocketRequester.RequestSpec route(String route) {

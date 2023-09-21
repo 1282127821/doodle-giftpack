@@ -31,7 +31,12 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableConfigurationProperties(GiftPackServerProperties.class)
 @EnableMongoAuditing
 @EnableMongoRepositories(
-    basePackageClasses = {GiftPackServerCodeRepo.class, GiftPackServerPlaceRepo.class})
+    basePackageClasses = {
+      GiftPackServerVisionRepo.class,
+      GiftPackServerGiftRepo.class,
+      GiftPackServerCodeRepo.class,
+      GiftPackServerPackRepo.class
+    })
 public class GiftPackServerAutoConfiguration {
 
   @Bean
@@ -45,19 +50,43 @@ public class GiftPackServerAutoConfiguration {
   public static class ServletConfiguration {
     @Bean
     @ConditionalOnMissingBean
+    public GiftPackServerVisionServletController giftPackServerVisionServletController() {
+      return new GiftPackServerVisionServletController();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerGiftServletController giftPackServerGiftServletController() {
+      return new GiftPackServerGiftServletController();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public GiftPackServerCodeServletController giftPackServerCodeServletController() {
       return new GiftPackServerCodeServletController();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerPlaceServletController giftPackServerPlaceServletController() {
-      return new GiftPackServerPlaceServletController();
+    public GIftPackServerPackServletController gIftPackServerPackServletController() {
+      return new GIftPackServerPackServletController();
     }
   }
 
   @AutoConfiguration
   public static class RSocketConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerVisionRSocketController giftPackServerVisionRSocketController() {
+      return new GiftPackServerVisionRSocketController();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerGiftRSocketController giftPackServerGiftRSocketController() {
+      return new GiftPackServerGiftRSocketController();
+    }
+
     @Bean
     @ConditionalOnMissingBean
     public GiftPackServerCodeRSocketController giftPackServerCodeRSocketController() {
@@ -66,8 +95,8 @@ public class GiftPackServerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerPlaceRSocketController giftPackServerPlaceRSocketController() {
-      return new GiftPackServerPlaceRSocketController();
+    public GIftPackServerPackRSocketController gIftPackServerPackRSocketController() {
+      return new GIftPackServerPackRSocketController();
     }
   }
 }

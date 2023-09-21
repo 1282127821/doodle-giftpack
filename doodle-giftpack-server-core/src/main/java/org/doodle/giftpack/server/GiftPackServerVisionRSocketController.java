@@ -23,18 +23,18 @@ import reactor.core.publisher.Mono;
 
 @Controller
 @RequiredArgsConstructor
-public class GiftPackServerCodeRSocketController
-    implements GiftPackCodeQueryOps.RSocket, GiftPackCodePageOps.RSocket {
+public class GiftPackServerVisionRSocketController
+    implements GiftPackVisionQueryOps.RSocket, GiftPackVisionPageOps.RSocket {
 
-  @MessageMapping(GiftPackCodePageOps.RSocket.PAGE_MAPPING)
+  @MessageMapping(GiftPackVisionPageOps.RSocket.PAGE_MAPPING)
   @Override
-  public Mono<GiftPackCodePageReply> page(GiftPackCodePageRequest request) {
+  public Mono<GiftPackVisionPageReply> page(GiftPackVisionPageRequest request) {
     return Mono.empty();
   }
 
-  @MessageMapping(GiftPackCodeQueryOps.RSocket.QUERY_MAPPING)
+  @MessageMapping(GiftPackVisionQueryOps.RSocket.QUERY_MAPPING)
   @Override
-  public Mono<GiftPackCodeQueryReply> query(GiftPackCodeQueryRequest request) {
+  public Mono<GiftPackVisionQueryReply> query(GiftPackVisionQueryRequest request) {
     return Mono.empty();
   }
 }

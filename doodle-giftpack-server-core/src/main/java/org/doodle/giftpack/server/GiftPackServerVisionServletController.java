@@ -17,29 +17,29 @@ package org.doodle.giftpack.server;
 
 import lombok.RequiredArgsConstructor;
 import org.doodle.design.common.Result;
-import org.doodle.design.giftpack.GiftPackPlacePageOps;
-import org.doodle.design.giftpack.GiftPackPlaceQueryOps;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackPlacePageRequest;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackPlaceQueryRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackPlacePageReply;
-import org.doodle.design.giftpack.model.payload.request.GiftPackPlaceQueryReply;
+import org.doodle.design.giftpack.GiftPackVisionPageOps;
+import org.doodle.design.giftpack.GiftPackVisionQueryOps;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackVisionPageReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackVisionQueryReply;
+import org.doodle.design.giftpack.model.payload.request.GiftPackVisionPageRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackVisionQueryRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class GiftPackServerPlaceServletController
-    implements GiftPackPlaceQueryOps.Servlet, GiftPackPlacePageOps.Servlet {
+public class GiftPackServerVisionServletController
+    implements GiftPackVisionQueryOps.Servlet, GiftPackVisionPageOps.Servlet {
 
-  @PostMapping(GiftPackPlacePageOps.Servlet.PAGE_MAPPING)
+  @PostMapping(GiftPackVisionPageOps.Servlet.PAGE_MAPPING)
   @Override
-  public Result<GiftPackPlacePageReply> page(GiftPackPlacePageRequest request) {
+  public Result<GiftPackVisionPageReply> page(GiftPackVisionPageRequest request) {
     return Result.bad();
   }
 
-  @PostMapping(GiftPackPlaceQueryOps.Servlet.QUERY_MAPPING)
+  @PostMapping(GiftPackVisionQueryOps.Servlet.QUERY_MAPPING)
   @Override
-  public Result<GiftPackPlaceQueryReply> query(GiftPackPlaceQueryRequest request) {
+  public Result<GiftPackVisionQueryReply> query(GiftPackVisionQueryRequest request) {
     return Result.bad();
   }
 }

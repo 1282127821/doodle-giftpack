@@ -18,22 +18,15 @@ package org.doodle.giftpack.server;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Builder
 @ToString
-@Setter
 @Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = GiftPackServerCodeEntity.COLLECTION)
 public class GiftPackServerCodeEntity {
   public static final String COLLECTION = "giftpack-codes";
-
-  @MongoId String packCode;
-
-  int packId;
-
-  String content;
 }

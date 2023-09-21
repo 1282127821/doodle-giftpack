@@ -15,14 +15,18 @@
  */
 package org.doodle.giftpack.server;
 
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
+@Builder
+@ToString
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ConfigurationProperties(prefix = GiftPackServerProperties.PREFIX)
-public class GiftPackServerProperties {
-  public static final String PREFIX = "doodle.giftpack.server";
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = GiftPackServerGiftEntity.COLLECTION)
+public class GiftPackServerGiftEntity {
+  public static final String COLLECTION = "giftpack-gifts";
 }

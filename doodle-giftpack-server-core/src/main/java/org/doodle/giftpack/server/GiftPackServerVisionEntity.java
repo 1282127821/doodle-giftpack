@@ -15,32 +15,18 @@
  */
 package org.doodle.giftpack.server;
 
-import lombok.experimental.UtilityClass;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@UtilityClass
-public class GiftPackServerExceptions {
-
-  static class Create extends RuntimeException {
-    public Create(Throwable cause) {
-      super(cause);
-    }
-  }
-
-  static class Query extends RuntimeException {
-    public Query(Throwable cause) {
-      super(cause);
-    }
-  }
-
-  static class Page extends RuntimeException {
-    public Page(Throwable cause) {
-      super(cause);
-    }
-  }
-
-  static class Use extends RuntimeException {
-    public Use(Throwable cause) {
-      super(cause);
-    }
-  }
+@Builder
+@ToString
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = GiftPackServerVisionEntity.COLLECTION)
+public class GiftPackServerVisionEntity {
+  public static final String COLLECTION = "giftpack-visions";
 }
