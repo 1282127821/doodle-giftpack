@@ -45,31 +45,60 @@ public class GiftPackServerAutoConfiguration {
     return new GiftPackServerMapper();
   }
 
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerVisionService giftPackServerVisionService(
+      GiftPackServerVisionRepo visionRepo) {
+    return new GiftPackServerVisionService(visionRepo);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerGiftService giftPackServerGiftService(GiftPackServerGiftRepo giftRepo) {
+    return new GiftPackServerGiftService(giftRepo);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerCodeService giftPackServerCodeService(GiftPackServerCodeRepo codeRepo) {
+    return new GiftPackServerCodeService(codeRepo);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerPackService giftPackServerPackService(GiftPackServerPackRepo packRepo) {
+    return new GiftPackServerPackService(packRepo);
+  }
+
   @AutoConfiguration
   @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
   public static class ServletConfiguration {
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerVisionServletController giftPackServerVisionServletController() {
-      return new GiftPackServerVisionServletController();
+    public GiftPackServerVisionServletController giftPackServerVisionServletController(
+        GiftPackServerVisionService visionService) {
+      return new GiftPackServerVisionServletController(visionService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerGiftServletController giftPackServerGiftServletController() {
-      return new GiftPackServerGiftServletController();
+    public GiftPackServerGiftServletController giftPackServerGiftServletController(
+        GiftPackServerGiftService giftService) {
+      return new GiftPackServerGiftServletController(giftService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerCodeServletController giftPackServerCodeServletController() {
-      return new GiftPackServerCodeServletController();
+    public GiftPackServerCodeServletController giftPackServerCodeServletController(
+        GiftPackServerCodeService codeService) {
+      return new GiftPackServerCodeServletController(codeService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GIftPackServerPackServletController gIftPackServerPackServletController() {
-      return new GIftPackServerPackServletController();
+    public GIftPackServerPackServletController gIftPackServerPackServletController(
+        GiftPackServerPackService packService) {
+      return new GIftPackServerPackServletController(packService);
     }
   }
 
@@ -77,26 +106,30 @@ public class GiftPackServerAutoConfiguration {
   public static class RSocketConfiguration {
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerVisionRSocketController giftPackServerVisionRSocketController() {
-      return new GiftPackServerVisionRSocketController();
+    public GiftPackServerVisionRSocketController giftPackServerVisionRSocketController(
+        GiftPackServerVisionService visionService) {
+      return new GiftPackServerVisionRSocketController(visionService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerGiftRSocketController giftPackServerGiftRSocketController() {
-      return new GiftPackServerGiftRSocketController();
+    public GiftPackServerGiftRSocketController giftPackServerGiftRSocketController(
+        GiftPackServerGiftService giftService) {
+      return new GiftPackServerGiftRSocketController(giftService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerCodeRSocketController giftPackServerCodeRSocketController() {
-      return new GiftPackServerCodeRSocketController();
+    public GiftPackServerCodeRSocketController giftPackServerCodeRSocketController(
+        GiftPackServerCodeService codeService) {
+      return new GiftPackServerCodeRSocketController(codeService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GIftPackServerPackRSocketController gIftPackServerPackRSocketController() {
-      return new GIftPackServerPackRSocketController();
+    public GIftPackServerPackRSocketController gIftPackServerPackRSocketController(
+        GiftPackServerPackService packService) {
+      return new GIftPackServerPackRSocketController(packService);
     }
   }
 }

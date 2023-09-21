@@ -15,7 +15,9 @@
  */
 package org.doodle.giftpack.server;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.Result;
 import org.doodle.design.giftpack.GiftPackCodePageOps;
 import org.doodle.design.giftpack.GiftPackCodeQueryOps;
@@ -27,9 +29,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GiftPackServerCodeServletController
     implements GiftPackCodeQueryOps.Servlet, GiftPackCodePageOps.Servlet {
+  GiftPackServerCodeService codeService;
 
   @PostMapping(GiftPackCodePageOps.Servlet.PAGE_MAPPING)
   @Override

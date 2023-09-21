@@ -17,7 +17,12 @@ package org.doodle.giftpack.server;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.doodle.design.giftpack.model.info.PackConditionInfo;
+import org.doodle.design.giftpack.model.info.PackDetailInfo;
+import org.doodle.design.giftpack.model.info.PackLifecycleInfo;
+import org.doodle.design.giftpack.model.info.PackOptionsInfo;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Builder
 @ToString
@@ -29,4 +34,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = GiftPackServerPackEntity.COLLECTION)
 public class GiftPackServerPackEntity {
   public static final String COLLECTION = "giftpack-packs";
+
+  @MongoId String packId;
+
+  PackLifecycleInfo lifecycle;
+  PackOptionsInfo options;
+  PackConditionInfo condition;
+  PackDetailInfo detail;
 }

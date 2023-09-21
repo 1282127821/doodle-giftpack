@@ -18,6 +18,7 @@ package org.doodle.giftpack.server;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Builder
 @ToString
@@ -29,4 +30,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = GiftPackServerGiftEntity.COLLECTION)
 public class GiftPackServerGiftEntity {
   public static final String COLLECTION = "giftpack-gifts";
+
+  @MongoId String giftId;
+
+  String content;
 }

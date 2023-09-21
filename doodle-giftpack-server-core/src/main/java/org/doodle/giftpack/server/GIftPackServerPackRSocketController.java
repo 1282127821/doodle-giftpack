@@ -15,16 +15,20 @@
  */
 package org.doodle.giftpack.server;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.doodle.design.giftpack.*;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Mono;
 
 @Controller
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GIftPackServerPackRSocketController
     implements GiftPackPackQueryOps.RSocket, GiftPackPackPageOps.RSocket {
+  GiftPackServerPackService packService;
 
   @MessageMapping(GiftPackPackPageOps.RSocket.PAGE_MAPPING)
   @Override

@@ -15,23 +15,12 @@
  */
 package org.doodle.giftpack.server;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Builder
-@ToString
-@Getter
-@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor
-@NoArgsConstructor
-@Document(collection = GiftPackServerVisionEntity.COLLECTION)
-public class GiftPackServerVisionEntity {
-  public static final String COLLECTION = "giftpack-visions";
-
-  @MongoId String visionId;
-
-  String description;
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
+public class GiftPackServerVisionService {
+  GiftPackServerVisionRepo visionRepo;
 }
