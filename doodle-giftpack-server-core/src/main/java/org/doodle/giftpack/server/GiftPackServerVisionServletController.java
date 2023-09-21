@@ -25,6 +25,8 @@ import org.doodle.design.giftpack.model.payload.reply.GiftPackVisionPageReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackVisionQueryReply;
 import org.doodle.design.giftpack.model.payload.request.GiftPackVisionPageRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackVisionQueryRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,5 +47,10 @@ public class GiftPackServerVisionServletController
   @Override
   public Result<GiftPackVisionQueryReply> query(GiftPackVisionQueryRequest request) {
     return Result.bad();
+  }
+
+  @ExceptionHandler(Exception.class)
+  ResponseEntity<Result<Void>> onException(Exception ignored) {
+    return ResponseEntity.badRequest().body(Result.bad());
   }
 }
