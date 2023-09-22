@@ -45,8 +45,7 @@ public class GIftPackServerPackRSocketController
 
   @MessageExceptionHandler(GiftPackServerExceptions.Page.class)
   Mono<GiftPackPackPageReply> onPageException(GiftPackServerExceptions.Page ignored) {
-    return Mono.just(
-        GiftPackPackPageReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
+    return Mono.just(mapper.toPackPageError(GiftPackErrorCode.FAILURE));
   }
 
   @MessageMapping(GiftPackPackQueryOps.RSocket.QUERY_MAPPING)
@@ -61,7 +60,6 @@ public class GIftPackServerPackRSocketController
 
   @MessageExceptionHandler(GiftPackServerExceptions.Query.class)
   Mono<GiftPackPackQueryReply> onQueryException(GiftPackServerExceptions.Query ignored) {
-    return Mono.just(
-        GiftPackPackQueryReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
+    return Mono.just(mapper.toPackQueryError(GiftPackErrorCode.FAILURE));
   }
 }

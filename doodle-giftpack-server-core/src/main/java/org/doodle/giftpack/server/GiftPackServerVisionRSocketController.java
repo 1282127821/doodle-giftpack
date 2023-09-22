@@ -45,8 +45,7 @@ public class GiftPackServerVisionRSocketController
 
   @MessageExceptionHandler(GiftPackServerExceptions.Page.class)
   Mono<GiftPackVisionPageReply> onPageException(GiftPackServerExceptions.Page ignored) {
-    return Mono.just(
-        GiftPackVisionPageReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
+    return Mono.just(mapper.toVisionPageError(GiftPackErrorCode.FAILURE));
   }
 
   @MessageMapping(GiftPackVisionQueryOps.RSocket.QUERY_MAPPING)
@@ -61,7 +60,6 @@ public class GiftPackServerVisionRSocketController
 
   @MessageExceptionHandler(GiftPackServerExceptions.Query.class)
   Mono<GiftPackVisionQueryReply> onQueryException(GiftPackServerExceptions.Query ignored) {
-    return Mono.just(
-        GiftPackVisionQueryReply.newBuilder().setError(GiftPackErrorCode.FAILURE).build());
+    return Mono.just(mapper.toVisionQueryError(GiftPackErrorCode.FAILURE));
   }
 }

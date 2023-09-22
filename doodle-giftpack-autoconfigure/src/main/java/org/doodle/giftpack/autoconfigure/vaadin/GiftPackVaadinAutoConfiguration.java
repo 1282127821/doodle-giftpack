@@ -42,7 +42,7 @@ public class GiftPackVaadinAutoConfiguration {
       item.setPrefixComponent(VaadinIcon.GIFT.create());
       item.addItem(
           new SideNavItem("视觉", GiftPackVaadinVisionView.class, VaadinIcon.VIEWPORT.create()));
-      item.addItem(new SideNavItem("礼物", GiftPackVaadinGiftView.class, VaadinIcon.GIFT.create()));
+      item.addItem(new SideNavItem("礼品", GiftPackVaadinGiftView.class, VaadinIcon.GIFT.create()));
       item.addItem(new SideNavItem("编码", GiftPackVaadinCodeView.class, VaadinIcon.CODE.create()));
       item.addItem(
           new SideNavItem("礼包", GiftPackVaadinPackView.class, VaadinIcon.PACKAGE.create()));
