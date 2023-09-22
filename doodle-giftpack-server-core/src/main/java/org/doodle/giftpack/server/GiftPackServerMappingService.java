@@ -15,6 +15,8 @@
  */
 package org.doodle.giftpack.server;
 
+import java.util.List;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,4 +27,18 @@ public class GiftPackServerMappingService {
   GiftPackServerGiftVisionRepo giftVisionRepo;
   GiftPackServerCodeGiftRepo codeGiftRepo;
   GiftPackServerPackCodeRepo packCodeRepo;
+
+  public Optional<GiftPackServerGiftVisionId> queryGiftVision(String giftId) {
+    return giftVisionRepo.findByGiftId(giftId).map(GiftPackServerGiftVisionEntity::getId);
+  }
+
+  public List<GiftPackServerCodeGiftId> queryCodeGift(String packCode) {
+    return codeGiftRepo.findAllByPackCode(packCode).stream()
+        .map(GiftPackServerCodeGiftEntity::getId)
+        .toList();
+  }
+
+  public Optional<GiftPackServerCodeGiftId> queryPackCode(String packId) {
+    return packCodeRepo.findByPackId(packId).map(GiftPackServerPackCodeEntity::getId);
+  }
 }

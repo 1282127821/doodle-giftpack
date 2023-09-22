@@ -15,9 +15,15 @@
  */
 package org.doodle.giftpack.server;
 
+import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GiftPackServerPackCodeRepo
-    extends MongoRepository<GiftPackServerPackCodeEntity, GiftPackServerPackCodeId> {}
+    extends MongoRepository<GiftPackServerPackCodeEntity, GiftPackServerPackCodeId> {
+
+  @Query("{'id.packId': '$regex: ?0'}")
+  Optional<GiftPackServerPackCodeEntity> findByPackId(String packId);
+}

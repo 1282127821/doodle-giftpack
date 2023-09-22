@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.model.PageRequest;
 import org.doodle.design.giftpack.model.info.CodeInfo;
+import org.doodle.design.giftpack.model.info.GiftInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.CollectionUtils;
@@ -31,6 +32,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class GiftPackServerCodeService {
   GiftPackServerCodeRepo codeRepo;
+  GiftPackServerMappingService mappingService;
   GiftPackServerGiftService giftService;
 
   public Mono<List<CodeInfo>> pageMono(PageRequest request) {
@@ -51,6 +53,15 @@ public class GiftPackServerCodeService {
     CodeInfo.CodeInfoBuilder builder = CodeInfo.builder();
     builder.codeId(code.getCodeId());
     builder.packCode(code.getPackCode());
+    List<GiftPackServerCodeGiftId> codeGiftIds = mappingService.queryCodeGift(code.getPackCode());
+    if (!CollectionUtils.isEmpty(codeGiftIds)) {
+      List<GiftInfo> giftInfos =
+          codeGiftIds.stream()
+              .map(GiftPackServerCodeGiftId::getGiftId)
+              .map(giftService::query)
+              .toList();
+      builder.giftInfos(giftInfos);
+    }
     return builder.build();
   }
 

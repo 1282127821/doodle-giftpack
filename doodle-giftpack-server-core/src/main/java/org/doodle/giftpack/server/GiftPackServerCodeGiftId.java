@@ -26,5 +26,5 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class GiftPackServerCodeGiftId {
   String packCode;
-  String giftId;
+  String packId;
 }

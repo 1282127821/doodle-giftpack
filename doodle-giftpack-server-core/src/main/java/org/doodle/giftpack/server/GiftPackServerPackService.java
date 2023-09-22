@@ -17,10 +17,12 @@ package org.doodle.giftpack.server;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.model.PageRequest;
+import org.doodle.design.giftpack.model.info.CodeInfo;
 import org.doodle.design.giftpack.model.info.PackInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class GiftPackServerPackService {
   GiftPackServerPackRepo packRepo;
+  GiftPackServerMappingService mappingService;
+  GiftPackServerCodeService codeService;
 
   public Mono<List<PackInfo>> pageMono(PageRequest request) {
     return Mono.fromCallable(() -> page(request));
@@ -48,6 +52,18 @@ public class GiftPackServerPackService {
 
   private PackInfo query(GiftPackServerPackEntity pack) {
     PackInfo.PackInfoBuilder builder = PackInfo.builder();
+    builder.packId(pack.getPackId());
+    builder.lifecycle(pack.getLifecycle());
+    builder.condition(pack.getCondition());
+    builder.options(pack.getOptions());
+    builder.detail(pack.getDetail());
+
+    Optional<GiftPackServerCodeGiftId> codeGiftId = mappingService.queryPackCode(pack.getPackId());
+    if (codeGiftId.isPresent()) {
+      CodeInfo codeInfo = codeService.query(codeGiftId.get().getPackCode());
+      builder.code(codeInfo);
+    }
+
     return builder.build();
   }
 

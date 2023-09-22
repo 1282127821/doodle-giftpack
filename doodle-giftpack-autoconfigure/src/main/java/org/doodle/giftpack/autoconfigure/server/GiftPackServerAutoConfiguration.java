@@ -67,21 +67,28 @@ public class GiftPackServerAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public GiftPackServerGiftService giftPackServerGiftService(
-      GiftPackServerGiftRepo giftRepo, GiftPackServerMappingService mappingService) {
-    return new GiftPackServerGiftService(giftRepo, mappingService);
+      GiftPackServerGiftRepo giftRepo,
+      GiftPackServerMappingService mappingService,
+      GiftPackServerVisionService visionService) {
+    return new GiftPackServerGiftService(giftRepo, mappingService, visionService);
   }
 
   @Bean
   @ConditionalOnMissingBean
   public GiftPackServerCodeService giftPackServerCodeService(
-      GiftPackServerCodeRepo codeRepo, GiftPackServerGiftService giftService) {
-    return new GiftPackServerCodeService(codeRepo, giftService);
+      GiftPackServerCodeRepo codeRepo,
+      GiftPackServerMappingService mappingService,
+      GiftPackServerGiftService giftService) {
+    return new GiftPackServerCodeService(codeRepo, mappingService, giftService);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GiftPackServerPackService giftPackServerPackService(GiftPackServerPackRepo packRepo) {
-    return new GiftPackServerPackService(packRepo);
+  public GiftPackServerPackService giftPackServerPackService(
+      GiftPackServerPackRepo packRepo,
+      GiftPackServerMappingService mappingService,
+      GiftPackServerCodeService codeService) {
+    return new GiftPackServerPackService(packRepo, mappingService, codeService);
   }
 
   @AutoConfiguration
