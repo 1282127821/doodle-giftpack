@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GiftPackServerGiftVisionRepo
-    extends MongoRepository<GiftPackServerGiftVisionEntity, GiftPackServerCodeGiftId> {
+    extends MongoRepository<GiftPackServerGiftVisionEntity, GiftPackServerGiftVisionId> {
 
   @Query("{'id.giftId': {'$regex': ?0}}")
   Optional<GiftPackServerGiftVisionEntity> findByGiftId(String giftId);
