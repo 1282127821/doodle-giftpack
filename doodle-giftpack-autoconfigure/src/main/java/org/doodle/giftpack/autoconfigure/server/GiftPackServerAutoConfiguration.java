@@ -35,7 +35,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
       GiftPackServerVisionRepo.class,
       GiftPackServerGiftRepo.class,
       GiftPackServerCodeRepo.class,
-      GiftPackServerPackRepo.class
+      GiftPackServerPackRepo.class,
+      GiftPackServerGiftVisionRepo.class,
+      GiftPackServerCodeGiftRepo.class,
+      GiftPackServerPackCodeRepo.class
     })
 public class GiftPackServerAutoConfiguration {
 
@@ -47,21 +50,32 @@ public class GiftPackServerAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
+  public GiftPackServerMappingService giftPackServerMappingService(
+      GiftPackServerGiftVisionRepo giftVisionRepo,
+      GiftPackServerCodeGiftRepo codeGiftRepo,
+      GiftPackServerPackCodeRepo packCodeRepo) {
+    return new GiftPackServerMappingService(giftVisionRepo, codeGiftRepo, packCodeRepo);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
   public GiftPackServerVisionService giftPackServerVisionService(
-      GiftPackServerVisionRepo visionRepo) {
-    return new GiftPackServerVisionService(visionRepo);
+      GiftPackServerMapper mapper, GiftPackServerVisionRepo visionRepo) {
+    return new GiftPackServerVisionService(mapper, visionRepo);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GiftPackServerGiftService giftPackServerGiftService(GiftPackServerGiftRepo giftRepo) {
-    return new GiftPackServerGiftService(giftRepo);
+  public GiftPackServerGiftService giftPackServerGiftService(
+      GiftPackServerGiftRepo giftRepo, GiftPackServerMappingService mappingService) {
+    return new GiftPackServerGiftService(giftRepo, mappingService);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GiftPackServerCodeService giftPackServerCodeService(GiftPackServerCodeRepo codeRepo) {
-    return new GiftPackServerCodeService(codeRepo);
+  public GiftPackServerCodeService giftPackServerCodeService(
+      GiftPackServerCodeRepo codeRepo, GiftPackServerGiftService giftService) {
+    return new GiftPackServerCodeService(codeRepo, giftService);
   }
 
   @Bean
@@ -73,6 +87,7 @@ public class GiftPackServerAutoConfiguration {
   @AutoConfiguration
   @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
   public static class ServletConfiguration {
+
     @Bean
     @ConditionalOnMissingBean
     public GiftPackServerVisionServletController giftPackServerVisionServletController(

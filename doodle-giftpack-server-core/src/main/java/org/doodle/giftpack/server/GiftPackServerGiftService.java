@@ -22,19 +22,41 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.model.PageRequest;
 import org.doodle.design.giftpack.model.info.GiftInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GiftPackServerGiftService {
   GiftPackServerGiftRepo giftRepo;
+  GiftPackServerMappingService mappingService;
 
   public Mono<List<GiftInfo>> pageMono(PageRequest request) {
     return Mono.fromCallable(() -> page(request));
   }
 
   public List<GiftInfo> page(PageRequest request) {
+    Page<GiftPackServerGiftEntity> page =
+        giftRepo.findAll(Pageable.ofSize(request.getPageSize()).withPage(request.getPageNumber()));
+    List<GiftPackServerGiftEntity> content = page.getContent();
+    if (!CollectionUtils.isEmpty(content)) {
+      return content.stream().map(this::query).toList();
+    }
     return Collections.emptyList();
+  }
+
+  private GiftInfo query(GiftPackServerGiftEntity gift) {
+    GiftInfo.GiftInfoBuilder builder = GiftInfo.builder();
+    builder.giftId(gift.getGiftId());
+    builder.content(gift.getContent());
+    // TODO: 2023/9/22
+    return builder.build();
+  }
+
+  private GiftPackServerGiftEntity queryOrElseThrow(String giftId) {
+    return giftRepo.findById(giftId).orElseThrow();
   }
 
   public Mono<GiftInfo> queryMono(String giftId) {
@@ -42,6 +64,6 @@ public class GiftPackServerGiftService {
   }
 
   private GiftInfo query(String giftId) {
-    return null;
+    return query(queryOrElseThrow(giftId));
   }
 }

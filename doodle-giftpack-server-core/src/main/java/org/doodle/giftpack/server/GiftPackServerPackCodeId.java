@@ -15,15 +15,16 @@
  */
 package org.doodle.giftpack.server;
 
-import org.doodle.design.giftpack.GiftPackMapper;
-import org.doodle.design.giftpack.model.info.VisionInfo;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-public class GiftPackServerMapper extends GiftPackMapper {
-
-  public VisionInfo toPojo(GiftPackServerVisionEntity vision) {
-    return VisionInfo.builder()
-        .visionId(vision.getVisionId())
-        .description(vision.getDescription())
-        .build();
-  }
+@Builder
+@ToString
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+public class GiftPackServerPackCodeId {
+  String packCode;
+  String giftId;
 }

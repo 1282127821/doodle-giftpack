@@ -22,6 +22,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.model.PageRequest;
 import org.doodle.design.giftpack.model.info.PackInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -34,7 +37,22 @@ public class GiftPackServerPackService {
   }
 
   public List<PackInfo> page(PageRequest request) {
+    Page<GiftPackServerPackEntity> page =
+        packRepo.findAll(Pageable.ofSize(request.getPageSize()).withPage(request.getPageNumber()));
+    List<GiftPackServerPackEntity> content = page.getContent();
+    if (!CollectionUtils.isEmpty(content)) {
+      return content.stream().map(this::query).toList();
+    }
     return Collections.emptyList();
+  }
+
+  private PackInfo query(GiftPackServerPackEntity pack) {
+    PackInfo.PackInfoBuilder builder = PackInfo.builder();
+    return builder.build();
+  }
+
+  private GiftPackServerPackEntity queryOrElseThrow(String packCode) {
+    return packRepo.findById(packCode).orElseThrow();
   }
 
   public Mono<PackInfo> queryMono(String packCode) {
@@ -42,6 +60,6 @@ public class GiftPackServerPackService {
   }
 
   public PackInfo query(String packCode) {
-    return null;
+    return query(queryOrElseThrow(packCode));
   }
 }

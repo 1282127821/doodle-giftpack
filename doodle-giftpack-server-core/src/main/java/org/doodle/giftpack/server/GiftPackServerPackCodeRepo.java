@@ -15,15 +15,9 @@
  */
 package org.doodle.giftpack.server;
 
-import org.doodle.design.giftpack.GiftPackMapper;
-import org.doodle.design.giftpack.model.info.VisionInfo;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public class GiftPackServerMapper extends GiftPackMapper {
-
-  public VisionInfo toPojo(GiftPackServerVisionEntity vision) {
-    return VisionInfo.builder()
-        .visionId(vision.getVisionId())
-        .description(vision.getDescription())
-        .build();
-  }
-}
+@Repository
+public interface GiftPackServerPackCodeRepo
+    extends MongoRepository<GiftPackServerPackCodeEntity, GiftPackServerPackCodeId> {}

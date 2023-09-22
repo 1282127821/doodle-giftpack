@@ -22,19 +22,36 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.model.PageRequest;
 import org.doodle.design.giftpack.model.info.CodeInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GiftPackServerCodeService {
   GiftPackServerCodeRepo codeRepo;
+  GiftPackServerGiftService giftService;
 
   public Mono<List<CodeInfo>> pageMono(PageRequest request) {
     return Mono.fromCallable(() -> page(request));
   }
 
   public List<CodeInfo> page(PageRequest request) {
+    Page<GiftPackServerCodeEntity> page =
+        codeRepo.findAll(Pageable.ofSize(request.getPageSize()).withPage(request.getPageNumber()));
+    List<GiftPackServerCodeEntity> content = page.getContent();
+    if (!CollectionUtils.isEmpty(content)) {
+      return content.stream().map(this::query).toList();
+    }
     return Collections.emptyList();
+  }
+
+  private CodeInfo query(GiftPackServerCodeEntity code) {
+    CodeInfo.CodeInfoBuilder builder = CodeInfo.builder();
+    builder.codeId(code.getCodeId());
+    builder.packCode(code.getPackCode());
+    return builder.build();
   }
 
   public Mono<CodeInfo> queryMono(String packCode) {
@@ -42,6 +59,10 @@ public class GiftPackServerCodeService {
   }
 
   public CodeInfo query(String packCode) {
-    return null;
+    return query(queryOrElseThrow(packCode));
+  }
+
+  private GiftPackServerCodeEntity queryOrElseThrow(String packCode) {
+    return codeRepo.findById(packCode).orElseThrow();
   }
 }

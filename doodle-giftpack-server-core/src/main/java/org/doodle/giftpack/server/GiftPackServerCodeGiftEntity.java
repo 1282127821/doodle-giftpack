@@ -15,15 +15,21 @@
  */
 package org.doodle.giftpack.server;
 
-import org.doodle.design.giftpack.GiftPackMapper;
-import org.doodle.design.giftpack.model.info.VisionInfo;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-public class GiftPackServerMapper extends GiftPackMapper {
+@Builder
+@ToString
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = GiftPackServerCodeGiftEntity.COLLECTION)
+public class GiftPackServerCodeGiftEntity {
+  public static final String COLLECTION = "giftpack-code-gift";
 
-  public VisionInfo toPojo(GiftPackServerVisionEntity vision) {
-    return VisionInfo.builder()
-        .visionId(vision.getVisionId())
-        .description(vision.getDescription())
-        .build();
-  }
+  @MongoId GiftPackServerCodeGiftId id;
 }

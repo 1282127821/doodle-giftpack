@@ -22,11 +22,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.model.PageRequest;
 import org.doodle.design.giftpack.model.info.VisionInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GiftPackServerVisionService {
+  GiftPackServerMapper mapper;
   GiftPackServerVisionRepo visionRepo;
 
   public Mono<List<VisionInfo>> pageMono(PageRequest request) {
@@ -34,7 +38,22 @@ public class GiftPackServerVisionService {
   }
 
   public List<VisionInfo> page(PageRequest request) {
+    Page<GiftPackServerVisionEntity> page =
+        visionRepo.findAll(
+            Pageable.ofSize(request.getPageSize()).withPage(request.getPageNumber()));
+    List<GiftPackServerVisionEntity> content = page.getContent();
+    if (!CollectionUtils.isEmpty(content)) {
+      return content.stream().map(this::query).toList();
+    }
     return Collections.emptyList();
+  }
+
+  private VisionInfo query(GiftPackServerVisionEntity vision) {
+    return mapper.toPojo(vision);
+  }
+
+  private GiftPackServerVisionEntity queryOrElseThrow(String visionId) {
+    return visionRepo.findById(visionId).orElseThrow();
   }
 
   public Mono<VisionInfo> queryMono(String visionId) {
@@ -42,6 +61,6 @@ public class GiftPackServerVisionService {
   }
 
   public VisionInfo query(String visionId) {
-    return null;
+    return query(queryOrElseThrow(visionId));
   }
 }
