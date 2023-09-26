@@ -39,7 +39,7 @@ public class GiftPackServerGiftRSocketController
         .map(mapper::fromProto)
         .flatMap(giftService::pageMono)
         .map(mapper::toGiftInfoList)
-        .map(mapper::toProto)
+        .map(mapper::toGiftPageReply)
         .onErrorMap(GiftPackServerExceptions.Page::new);
   }
 
@@ -54,7 +54,7 @@ public class GiftPackServerGiftRSocketController
     return Mono.fromSupplier(request::getGiftId)
         .flatMap(giftService::queryMono)
         .map(mapper::toProto)
-        .map(mapper::toProto)
+        .map(mapper::toGiftQueryReply)
         .onErrorMap(GiftPackServerExceptions.Query::new);
   }
 

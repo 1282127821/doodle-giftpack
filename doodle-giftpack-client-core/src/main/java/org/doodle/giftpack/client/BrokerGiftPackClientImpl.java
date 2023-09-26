@@ -65,6 +65,13 @@ public class BrokerGiftPackClientImpl implements GiftPackClientRSocket {
   }
 
   @Override
+  public Mono<GiftPackCodeUseReply> use(GiftPackCodeUseRequest request) {
+    return route(GiftPackCodeUseOps.RSocket.USE_MAPPING)
+        .data(request)
+        .retrieveMono(GiftPackCodeUseReply.class);
+  }
+
+  @Override
   public Mono<GiftPackGiftPageReply> page(GiftPackGiftPageRequest request) {
     return route(GiftPackGiftPageOps.RSocket.PAGE_MAPPING)
         .data(request)

@@ -21,10 +21,13 @@ import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.Result;
 import org.doodle.design.giftpack.GiftPackCodePageOps;
 import org.doodle.design.giftpack.GiftPackCodeQueryOps;
+import org.doodle.design.giftpack.GiftPackCodeUseOps;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackCodePageReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackCodeQueryReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackCodeUseReply;
 import org.doodle.design.giftpack.model.payload.request.GiftPackCodePageRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackCodeQueryRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackCodeUseRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +37,9 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GiftPackServerCodeServletController
-    implements GiftPackCodeQueryOps.Servlet, GiftPackCodePageOps.Servlet {
+    implements GiftPackCodeQueryOps.Servlet,
+        GiftPackCodePageOps.Servlet,
+        GiftPackCodeUseOps.Servlet {
   GiftPackServerCodeService codeService;
 
   @PostMapping(GiftPackCodePageOps.Servlet.PAGE_MAPPING)
@@ -46,6 +51,12 @@ public class GiftPackServerCodeServletController
   @PostMapping(GiftPackCodeQueryOps.Servlet.QUERY_MAPPING)
   @Override
   public Result<GiftPackCodeQueryReply> query(GiftPackCodeQueryRequest request) {
+    return Result.bad();
+  }
+
+  @PostMapping(GiftPackCodeUseOps.Servlet.USE_MAPPING)
+  @Override
+  public Result<GiftPackCodeUseReply> use(GiftPackCodeUseRequest request) {
     return Result.bad();
   }
 

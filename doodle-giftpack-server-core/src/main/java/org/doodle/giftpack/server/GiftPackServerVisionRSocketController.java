@@ -39,7 +39,7 @@ public class GiftPackServerVisionRSocketController
         .map(mapper::fromProto)
         .flatMap(visionService::pageMono)
         .map(mapper::toVisionInfoList)
-        .map(mapper::toProto)
+        .map(mapper::toVisionPageReply)
         .onErrorMap(GiftPackServerExceptions.Page::new);
   }
 
@@ -54,7 +54,7 @@ public class GiftPackServerVisionRSocketController
     return Mono.fromSupplier(request::getVisionId)
         .flatMap(visionService::queryMono)
         .map(mapper::toProto)
-        .map(mapper::toProto)
+        .map(mapper::toVisionQueryReply)
         .onErrorMap(GiftPackServerExceptions.Query::new);
   }
 

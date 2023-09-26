@@ -24,5 +24,6 @@ public interface GiftPackClientServlet
         GiftPackGiftPageOps.Servlet,
         GiftPackCodeQueryOps.Servlet,
         GiftPackCodePageOps.Servlet,
+        GiftPackCodeUseOps.Servlet,
         GiftPackPackQueryOps.Servlet,
         GiftPackPackPageOps.Servlet {}
