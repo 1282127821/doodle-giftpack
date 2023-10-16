@@ -28,7 +28,9 @@ import reactor.core.publisher.Mono;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GIftPackServerPackRSocketController
-    implements GiftPackPackQueryOps.RSocket, GiftPackPackPageOps.RSocket {
+    implements GiftPackPackQueryOps.RSocket,
+        GiftPackPackPageOps.RSocket,
+        GiftPackPackUseOps.RSocket {
   GiftPackServerMapper mapper;
   GiftPackServerPackService packService;
 
@@ -61,5 +63,20 @@ public class GIftPackServerPackRSocketController
   @MessageExceptionHandler(GiftPackServerExceptions.Query.class)
   Mono<GiftPackPackQueryReply> onQueryException(GiftPackServerExceptions.Query ignored) {
     return Mono.just(mapper.toPackQueryError(GiftPackErrorCode.FAILURE));
+  }
+
+  @MessageMapping(GiftPackPackUseOps.RSocket.USE_MAPPING)
+  @Override
+  public Mono<GiftPackPackUseReply> use(GiftPackPackUseRequest request) {
+    return Mono.just(request)
+        .flatMap(req -> packService.useMono(req.getPackCode(), mapper.fromProto(req.getUser())))
+        .map(mapper::toProto)
+        .map(mapper::toPackUseReply)
+        .onErrorMap(GiftPackServerExceptions.Use::new);
+  }
+
+  @MessageExceptionHandler(GiftPackServerExceptions.Use.class)
+  Mono<GiftPackPackUseReply> onUseException(GiftPackServerExceptions.Use ignored) {
+    return Mono.just(mapper.toPackUseError(GiftPackErrorCode.FAILURE));
   }
 }

@@ -24,6 +24,6 @@ public interface GiftPackClientRSocket
         GiftPackGiftPageOps.RSocket,
         GiftPackCodeQueryOps.RSocket,
         GiftPackCodePageOps.RSocket,
-        GiftPackCodeUseOps.RSocket,
         GiftPackPackQueryOps.RSocket,
-        GiftPackPackPageOps.RSocket {}
+        GiftPackPackPageOps.RSocket,
+        GiftPackPackUseOps.RSocket {}

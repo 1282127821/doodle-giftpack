@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.model.PageRequest;
 import org.doodle.design.giftpack.model.info.CodeInfo;
+import org.doodle.design.giftpack.model.info.CodeUserInfo;
 import org.doodle.design.giftpack.model.info.PackInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -77,5 +78,13 @@ public class GiftPackServerPackService {
 
   public PackInfo query(String packCode) {
     return query(queryOrElseThrow(packCode));
+  }
+
+  public Mono<PackInfo> useMono(String packCode, CodeUserInfo codeUser) {
+    return Mono.fromSupplier(() -> use(packCode, codeUser));
+  }
+
+  private PackInfo use(String packCode, CodeUserInfo codeUser) {
+    return null;
   }
 }

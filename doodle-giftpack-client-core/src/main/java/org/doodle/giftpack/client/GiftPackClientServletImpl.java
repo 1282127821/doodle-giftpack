@@ -23,20 +23,20 @@ import org.doodle.design.common.Result;
 import org.doodle.design.giftpack.*;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackCodePageReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackCodeQueryReply;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackCodeUseReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackGiftPageReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackGiftQueryReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackPackPageReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackPackQueryReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackPackUseReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackVisionPageReply;
 import org.doodle.design.giftpack.model.payload.reply.GiftPackVisionQueryReply;
 import org.doodle.design.giftpack.model.payload.request.GiftPackCodePageRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackCodeQueryRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackCodeUseRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackGiftPageRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackGiftQueryRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackPackPageRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackPackQueryRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackPackUseRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackVisionPageRequest;
 import org.doodle.design.giftpack.model.payload.request.GiftPackVisionQueryRequest;
 import org.springframework.core.ParameterizedTypeReference;
@@ -59,9 +59,6 @@ public class GiftPackClientServletImpl implements GiftPackClientServlet {
       new ParameterizedTypeReference<>() {};
   static final ParameterizedTypeReference<Result<GiftPackCodeQueryReply>> CODE_QUERY_REPLY =
       new ParameterizedTypeReference<>() {};
-  static final ParameterizedTypeReference<Result<GiftPackCodeUseReply>> CODE_USE_REPLY =
-      new ParameterizedTypeReference<>() {};
-
   static final ParameterizedTypeReference<Result<GiftPackGiftPageReply>> GIFT_PAGE_REPLY =
       new ParameterizedTypeReference<>() {};
   static final ParameterizedTypeReference<Result<GiftPackGiftQueryReply>> GIFT_QUERY_REPLY =
@@ -69,6 +66,9 @@ public class GiftPackClientServletImpl implements GiftPackClientServlet {
   static final ParameterizedTypeReference<Result<GiftPackPackPageReply>> PACK_PAGE_REPLY =
       new ParameterizedTypeReference<>() {};
   static final ParameterizedTypeReference<Result<GiftPackPackQueryReply>> PACK_QUERY_REPLY =
+      new ParameterizedTypeReference<>() {};
+
+  static final ParameterizedTypeReference<Result<GiftPackPackUseReply>> PACK_USE_REPLY =
       new ParameterizedTypeReference<>() {};
 
   @Override
@@ -116,17 +116,6 @@ public class GiftPackClientServletImpl implements GiftPackClientServlet {
   }
 
   @Override
-  public Result<GiftPackCodeUseReply> use(GiftPackCodeUseRequest request) {
-    return restTemplate
-        .exchange(
-            GiftPackCodeUseOps.Servlet.USE_MAPPING,
-            HttpMethod.POST,
-            new HttpEntity<>(request, createHttpHeaders()),
-            CODE_USE_REPLY)
-        .getBody();
-  }
-
-  @Override
   public Result<GiftPackGiftPageReply> page(GiftPackGiftPageRequest request) {
     return restTemplate
         .exchange(
@@ -167,6 +156,17 @@ public class GiftPackClientServletImpl implements GiftPackClientServlet {
             HttpMethod.POST,
             new HttpEntity<>(request, createHttpHeaders()),
             PACK_QUERY_REPLY)
+        .getBody();
+  }
+
+  @Override
+  public Result<GiftPackPackUseReply> use(GiftPackPackUseRequest request) {
+    return restTemplate
+        .exchange(
+            GiftPackPackUseOps.Servlet.USE_MAPPING,
+            HttpMethod.POST,
+            new HttpEntity<>(request, createHttpHeaders()),
+            PACK_USE_REPLY)
         .getBody();
   }
 

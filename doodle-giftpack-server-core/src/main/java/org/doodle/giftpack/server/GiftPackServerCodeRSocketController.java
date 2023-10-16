@@ -28,9 +28,7 @@ import reactor.core.publisher.Mono;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class GiftPackServerCodeRSocketController
-    implements GiftPackCodeQueryOps.RSocket,
-        GiftPackCodePageOps.RSocket,
-        GiftPackCodeUseOps.RSocket {
+    implements GiftPackCodeQueryOps.RSocket, GiftPackCodePageOps.RSocket {
   GiftPackServerMapper mapper;
   GiftPackServerCodeService codeService;
 
@@ -63,16 +61,5 @@ public class GiftPackServerCodeRSocketController
   @MessageExceptionHandler(GiftPackServerExceptions.Query.class)
   Mono<GiftPackCodeQueryReply> onQueryException(GiftPackServerExceptions.Query ignored) {
     return Mono.just(mapper.toCodeQueryError(GiftPackErrorCode.FAILURE));
-  }
-
-  @MessageMapping(GiftPackCodeUseOps.RSocket.USE_MAPPING)
-  @Override
-  public Mono<GiftPackCodeUseReply> use(GiftPackCodeUseRequest request) {
-    return Mono.empty();
-  }
-
-  @MessageExceptionHandler(GiftPackServerExceptions.Use.class)
-  Mono<GiftPackCodeUseReply> onUseException(GiftPackServerExceptions.Use ignored) {
-    return Mono.just(mapper.toCodeUseError(GiftPackErrorCode.FAILURE));
   }
 }
