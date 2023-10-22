@@ -15,20 +15,8 @@
  */
 package org.doodle.giftpack.server;
 
-import lombok.experimental.UtilityClass;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-@UtilityClass
-public class GiftPackServerExceptions {
-
-  static class Query extends RuntimeException {
-    public Query(Throwable cause) {
-      super(cause);
-    }
-  }
-
-  static class Page extends RuntimeException {
-    public Page(Throwable cause) {
-      super(cause);
-    }
-  }
-}
+@Repository
+public interface GiftPackServerGroupRepo extends MongoRepository<GiftPackServerGroupEntity, Long> {}

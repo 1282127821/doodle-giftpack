@@ -18,12 +18,10 @@ package org.doodle.giftpack.client;
 import org.doodle.design.giftpack.*;
 
 public interface GiftPackClientServlet
-    extends GiftPackVisionQueryOps.Servlet,
-        GiftPackVisionPageOps.Servlet,
-        GiftPackGiftQueryOps.Servlet,
-        GiftPackGiftPageOps.Servlet,
-        GiftPackCodeQueryOps.Servlet,
-        GiftPackCodePageOps.Servlet,
-        GiftPackPackQueryOps.Servlet,
-        GiftPackPackPageOps.Servlet,
-        GiftPackPackUseOps.Servlet {}
+    extends GIftPackGroupQueryOps.Servlet,
+        GiftPackGroupPageOps.Servlet,
+        GiftPackBatchQueryOps.Servlet,
+        GiftPackBatchPageOps.Servlet,
+        GiftPackSpecQueryOps.Servlet,
+        GiftPackSpecPageOps.Servlet,
+        GiftPackRoleUseOps.Servlet {}

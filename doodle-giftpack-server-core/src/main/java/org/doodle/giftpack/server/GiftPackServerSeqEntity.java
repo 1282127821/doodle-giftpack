@@ -15,20 +15,23 @@
  */
 package org.doodle.giftpack.server;
 
-import lombok.experimental.UtilityClass;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@UtilityClass
-public class GiftPackServerExceptions {
+@Builder
+@ToString
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = GiftPackServerSeqEntity.COLLECTION)
+public class GiftPackServerSeqEntity {
+  public static final String COLLECTION = "giftpack-seqs";
 
-  static class Query extends RuntimeException {
-    public Query(Throwable cause) {
-      super(cause);
-    }
-  }
+  @MongoId String seqId;
 
-  static class Page extends RuntimeException {
-    public Page(Throwable cause) {
-      super(cause);
-    }
-  }
+  long seq;
 }

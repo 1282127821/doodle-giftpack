@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @AutoConfiguration(after = BrokerClientAutoConfiguration.class)
@@ -32,13 +33,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoAuditing
 @EnableMongoRepositories(
     basePackageClasses = {
-      GiftPackServerVisionRepo.class,
-      GiftPackServerGiftRepo.class,
-      GiftPackServerCodeRepo.class,
-      GiftPackServerPackRepo.class,
-      GiftPackServerGiftVisionRepo.class,
-      GiftPackServerCodeGiftRepo.class,
-      GiftPackServerPackCodeRepo.class
+      GiftPackServerGroupRepo.class,
+      GiftPackServerBatchRepo.class,
+      GiftPackServerSpecRepo.class,
+      GiftPackServerContentRepo.class,
     })
 public class GiftPackServerAutoConfiguration {
 
@@ -50,45 +48,58 @@ public class GiftPackServerAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public GiftPackServerMappingService giftPackServerMappingService(
-      GiftPackServerGiftVisionRepo giftVisionRepo,
-      GiftPackServerCodeGiftRepo codeGiftRepo,
-      GiftPackServerPackCodeRepo packCodeRepo) {
-    return new GiftPackServerMappingService(giftVisionRepo, codeGiftRepo, packCodeRepo);
+  public GiftPackServerContentService giftPackServerContentService(
+      MongoTemplate mongoTemplate, GiftPackServerContentRepo contentRepo) {
+    return new GiftPackServerContentService(mongoTemplate, contentRepo);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GiftPackServerVisionService giftPackServerVisionService(
-      GiftPackServerMapper mapper, GiftPackServerVisionRepo visionRepo) {
-    return new GiftPackServerVisionService(mapper, visionRepo);
+  public GiftPackServerContentListener giftPackServerContentListener(
+      GiftPackServerContentService contentService) {
+    return new GiftPackServerContentListener(contentService);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GiftPackServerGiftService giftPackServerGiftService(
-      GiftPackServerGiftRepo giftRepo,
-      GiftPackServerMappingService mappingService,
-      GiftPackServerVisionService visionService) {
-    return new GiftPackServerGiftService(giftRepo, mappingService, visionService);
+  public GiftPackServerGroupService giftPackServerGroupService(
+      MongoTemplate mongoTemplate, GiftPackServerGroupRepo groupRepo) {
+    return new GiftPackServerGroupService(mongoTemplate, groupRepo);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GiftPackServerCodeService giftPackServerCodeService(
-      GiftPackServerCodeRepo codeRepo,
-      GiftPackServerMappingService mappingService,
-      GiftPackServerGiftService giftService) {
-    return new GiftPackServerCodeService(codeRepo, mappingService, giftService);
+  public GiftPackServerGroupListener giftPackServerGroupListener(
+      GiftPackServerGroupService groupService) {
+    return new GiftPackServerGroupListener(groupService);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GiftPackServerPackService giftPackServerPackService(
-      GiftPackServerPackRepo packRepo,
-      GiftPackServerMappingService mappingService,
-      GiftPackServerCodeService codeService) {
-    return new GiftPackServerPackService(packRepo, mappingService, codeService);
+  public GiftPackServerBatchService giftPackServerBatchService(
+      MongoTemplate mongoTemplate, GiftPackServerBatchRepo batchRepo) {
+    return new GiftPackServerBatchService(mongoTemplate, batchRepo);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerBatchListener giftPackServerBatchListener(
+      GiftPackServerBatchService batchService) {
+    return new GiftPackServerBatchListener(batchService);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerSpecService giftPackServerSpecService(
+      MongoTemplate mongoTemplate, GiftPackServerSpecRepo specRepo) {
+    return new GiftPackServerSpecService(mongoTemplate, specRepo);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerSpecListener giftPackServerSpecListener(
+      GiftPackServerSpecService specService) {
+    return new GiftPackServerSpecListener(specService);
   }
 
   @AutoConfiguration
@@ -97,30 +108,30 @@ public class GiftPackServerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerVisionServletController giftPackServerVisionServletController(
-        GiftPackServerVisionService visionService) {
-      return new GiftPackServerVisionServletController(visionService);
+    public GiftPackServerContentServletController giftPackServerContentServletController(
+        GiftPackServerContentService contentService) {
+      return new GiftPackServerContentServletController(contentService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerGiftServletController giftPackServerGiftServletController(
-        GiftPackServerGiftService giftService) {
-      return new GiftPackServerGiftServletController(giftService);
+    public GiftPackServerGroupServletController giftPackServerGroupServletController(
+        GiftPackServerGroupService groupService) {
+      return new GiftPackServerGroupServletController(groupService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerCodeServletController giftPackServerCodeServletController(
-        GiftPackServerCodeService codeService) {
-      return new GiftPackServerCodeServletController(codeService);
+    public GiftPackServerBatchServletController giftPackServerBatchServletController(
+        GiftPackServerBatchService batchService) {
+      return new GiftPackServerBatchServletController(batchService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GIftPackServerPackServletController gIftPackServerPackServletController(
-        GiftPackServerPackService packService) {
-      return new GIftPackServerPackServletController(packService);
+    public GiftPackServerSpecServletController giftPackServerSpecServletController(
+        GiftPackServerSpecService specService) {
+      return new GiftPackServerSpecServletController(specService);
     }
   }
 
@@ -128,30 +139,30 @@ public class GiftPackServerAutoConfiguration {
   public static class RSocketConfiguration {
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerVisionRSocketController giftPackServerVisionRSocketController(
-        GiftPackServerMapper mapper, GiftPackServerVisionService visionService) {
-      return new GiftPackServerVisionRSocketController(mapper, visionService);
+    public GiftPackServerContentRSocketController giftPackServerContentRSocketController(
+        GiftPackServerMapper mapper, GiftPackServerContentService contentService) {
+      return new GiftPackServerContentRSocketController(mapper, contentService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerGiftRSocketController giftPackServerGiftRSocketController(
-        GiftPackServerMapper mapper, GiftPackServerGiftService giftService) {
-      return new GiftPackServerGiftRSocketController(mapper, giftService);
+    public GiftPackServerGroupRSocketController giftPackServerGroupRSocketController(
+        GiftPackServerMapper mapper, GiftPackServerGroupService groupService) {
+      return new GiftPackServerGroupRSocketController(mapper, groupService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GiftPackServerCodeRSocketController giftPackServerCodeRSocketController(
-        GiftPackServerMapper mapper, GiftPackServerCodeService codeService) {
-      return new GiftPackServerCodeRSocketController(mapper, codeService);
+    public GiftPackServerBatchRSocketController giftPackServerBatchRSocketController(
+        GiftPackServerMapper mapper, GiftPackServerBatchService batchService) {
+      return new GiftPackServerBatchRSocketController(mapper, batchService);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GIftPackServerPackRSocketController gIftPackServerPackRSocketController(
-        GiftPackServerMapper mapper, GiftPackServerPackService packService) {
-      return new GIftPackServerPackRSocketController(mapper, packService);
+    public GiftPackServerSpecRSocketController giftPackServerSpecRSocketController(
+        GiftPackServerMapper mapper, GiftPackServerSpecService specService) {
+      return new GiftPackServerSpecRSocketController(mapper, specService);
     }
   }
 }

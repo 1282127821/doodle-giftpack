@@ -20,10 +20,10 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import org.doodle.boot.vaadin.EnableVaadin;
 import org.doodle.boot.vaadin.views.VaadinSideNavItemSupplier;
 import org.doodle.giftpack.vaadin.GiftPackVaadinProperties;
-import org.doodle.giftpack.vaadin.views.GiftPackVaadinCodeView;
-import org.doodle.giftpack.vaadin.views.GiftPackVaadinGiftView;
-import org.doodle.giftpack.vaadin.views.GiftPackVaadinPackView;
-import org.doodle.giftpack.vaadin.views.GiftPackVaadinVisionView;
+import org.doodle.giftpack.vaadin.views.GiftPackVaadinBatchView;
+import org.doodle.giftpack.vaadin.views.GiftPackVaadinContentView;
+import org.doodle.giftpack.vaadin.views.GiftPackVaadinGroupView;
+import org.doodle.giftpack.vaadin.views.GiftPackVaadinSpecView;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -41,11 +41,12 @@ public class GiftPackVaadinAutoConfiguration {
       SideNavItem item = new SideNavItem("礼包组件");
       item.setPrefixComponent(VaadinIcon.GIFT.create());
       item.addItem(
-          new SideNavItem("视觉", GiftPackVaadinVisionView.class, VaadinIcon.VIEWPORT.create()));
-      item.addItem(new SideNavItem("礼品", GiftPackVaadinGiftView.class, VaadinIcon.GIFT.create()));
-      item.addItem(new SideNavItem("编码", GiftPackVaadinCodeView.class, VaadinIcon.CODE.create()));
+          new SideNavItem("礼包", GiftPackVaadinContentView.class, VaadinIcon.CODE.create()));
+      item.addItem(new SideNavItem("通用", GiftPackVaadinGroupView.class, VaadinIcon.GIFT.create()));
       item.addItem(
-          new SideNavItem("礼包", GiftPackVaadinPackView.class, VaadinIcon.PACKAGE.create()));
+          new SideNavItem("批量", GiftPackVaadinBatchView.class, VaadinIcon.PACKAGE.create()));
+      item.addItem(
+          new SideNavItem("特供", GiftPackVaadinSpecView.class, VaadinIcon.VIEWPORT.create()));
       return item;
     };
   }

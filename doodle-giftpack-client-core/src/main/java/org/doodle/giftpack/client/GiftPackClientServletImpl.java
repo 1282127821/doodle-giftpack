@@ -21,24 +21,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.Result;
 import org.doodle.design.giftpack.*;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackCodePageReply;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackCodeQueryReply;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackGiftPageReply;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackGiftQueryReply;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackPackPageReply;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackPackQueryReply;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackPackUseReply;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackVisionPageReply;
-import org.doodle.design.giftpack.model.payload.reply.GiftPackVisionQueryReply;
-import org.doodle.design.giftpack.model.payload.request.GiftPackCodePageRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackCodeQueryRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackGiftPageRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackGiftQueryRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackPackPageRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackPackQueryRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackPackUseRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackVisionPageRequest;
-import org.doodle.design.giftpack.model.payload.request.GiftPackVisionQueryRequest;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackBatchPageReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackBatchQueryReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackGroupPageReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackGroupQueryReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackRoleUseReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackSpecPageReply;
+import org.doodle.design.giftpack.model.payload.reply.GiftPackSpecQueryReply;
+import org.doodle.design.giftpack.model.payload.request.GiftPackBatchPageRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackBatchQueryRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackGroupPageRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackGroupQueryRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackRoleUseRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackSpecPageRequest;
+import org.doodle.design.giftpack.model.payload.request.GiftPackSpecQueryRequest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -51,126 +47,105 @@ import org.springframework.web.client.RestTemplate;
 public class GiftPackClientServletImpl implements GiftPackClientServlet {
   RestTemplate restTemplate;
 
-  static final ParameterizedTypeReference<Result<GiftPackVisionQueryReply>> VISION_QUERY_REPLY =
-      new ParameterizedTypeReference<>() {};
-  static final ParameterizedTypeReference<Result<GiftPackVisionPageReply>> VISION_PAGE_REPLY =
-      new ParameterizedTypeReference<>() {};
-  static final ParameterizedTypeReference<Result<GiftPackCodePageReply>> CODE_PAGE_REPLY =
-      new ParameterizedTypeReference<>() {};
-  static final ParameterizedTypeReference<Result<GiftPackCodeQueryReply>> CODE_QUERY_REPLY =
-      new ParameterizedTypeReference<>() {};
-  static final ParameterizedTypeReference<Result<GiftPackGiftPageReply>> GIFT_PAGE_REPLY =
-      new ParameterizedTypeReference<>() {};
-  static final ParameterizedTypeReference<Result<GiftPackGiftQueryReply>> GIFT_QUERY_REPLY =
-      new ParameterizedTypeReference<>() {};
-  static final ParameterizedTypeReference<Result<GiftPackPackPageReply>> PACK_PAGE_REPLY =
-      new ParameterizedTypeReference<>() {};
-  static final ParameterizedTypeReference<Result<GiftPackPackQueryReply>> PACK_QUERY_REPLY =
+  static final ParameterizedTypeReference<Result<GiftPackRoleUseReply>> ROLE_USE_REPLY =
       new ParameterizedTypeReference<>() {};
 
-  static final ParameterizedTypeReference<Result<GiftPackPackUseReply>> PACK_USE_REPLY =
+  static final ParameterizedTypeReference<Result<GiftPackGroupPageReply>> GROUP_PAGE_REPLY =
+      new ParameterizedTypeReference<>() {};
+
+  static final ParameterizedTypeReference<Result<GiftPackGroupQueryReply>> GROUP_QUERY_REPLY =
+      new ParameterizedTypeReference<>() {};
+
+  static final ParameterizedTypeReference<Result<GiftPackBatchPageReply>> BATCH_PAGE_REPLY =
+      new ParameterizedTypeReference<>() {};
+
+  static final ParameterizedTypeReference<Result<GiftPackBatchQueryReply>> BATCH_QUERY_REPLY =
+      new ParameterizedTypeReference<>() {};
+
+  static final ParameterizedTypeReference<Result<GiftPackSpecPageReply>> SPEC_PAGE_REPLY =
+      new ParameterizedTypeReference<>() {};
+
+  static final ParameterizedTypeReference<Result<GiftPackSpecQueryReply>> SPEC_QUERY_REPLY =
       new ParameterizedTypeReference<>() {};
 
   @Override
-  public Result<GiftPackVisionPageReply> page(GiftPackVisionPageRequest request) {
+  public Result<GiftPackRoleUseReply> use(GiftPackRoleUseRequest request) {
     return restTemplate
         .exchange(
-            GiftPackVisionPageOps.Servlet.PAGE_MAPPING,
+            GiftPackRoleUseOps.Servlet.USE_MAPPING,
             HttpMethod.POST,
             new HttpEntity<>(request, createHttpHeaders()),
-            VISION_PAGE_REPLY)
+            ROLE_USE_REPLY)
         .getBody();
   }
 
   @Override
-  public Result<GiftPackVisionQueryReply> query(GiftPackVisionQueryRequest request) {
+  public Result<GiftPackGroupPageReply> page(GiftPackGroupPageRequest request) {
     return restTemplate
         .exchange(
-            GiftPackVisionQueryOps.Servlet.QUERY_MAPPING,
+            GiftPackGroupPageOps.Servlet.PAGE_MAPPING,
             HttpMethod.POST,
             new HttpEntity<>(request, createHttpHeaders()),
-            VISION_QUERY_REPLY)
+            GROUP_PAGE_REPLY)
         .getBody();
   }
 
   @Override
-  public Result<GiftPackCodePageReply> page(GiftPackCodePageRequest request) {
+  public Result<GiftPackGroupQueryReply> query(GiftPackGroupQueryRequest request) {
     return restTemplate
         .exchange(
-            GiftPackCodePageOps.Servlet.PAGE_MAPPING,
+            GIftPackGroupQueryOps.Servlet.QUERY_MAPPING,
             HttpMethod.POST,
             new HttpEntity<>(request, createHttpHeaders()),
-            CODE_PAGE_REPLY)
+            GROUP_QUERY_REPLY)
         .getBody();
   }
 
   @Override
-  public Result<GiftPackCodeQueryReply> query(GiftPackCodeQueryRequest request) {
+  public Result<GiftPackBatchPageReply> page(GiftPackBatchPageRequest request) {
     return restTemplate
         .exchange(
-            GiftPackCodeQueryOps.Servlet.QUERY_MAPPING,
+            GiftPackBatchPageOps.Servlet.PAGE_MAPPING,
             HttpMethod.POST,
             new HttpEntity<>(request, createHttpHeaders()),
-            CODE_QUERY_REPLY)
+            BATCH_PAGE_REPLY)
         .getBody();
   }
 
   @Override
-  public Result<GiftPackGiftPageReply> page(GiftPackGiftPageRequest request) {
+  public Result<GiftPackBatchQueryReply> query(GiftPackBatchQueryRequest request) {
     return restTemplate
         .exchange(
-            GiftPackGiftPageOps.Servlet.PAGE_MAPPING,
+            GiftPackBatchQueryOps.Servlet.QUERY_MAPPING,
             HttpMethod.POST,
             new HttpEntity<>(request, createHttpHeaders()),
-            GIFT_PAGE_REPLY)
+            BATCH_QUERY_REPLY)
         .getBody();
   }
 
   @Override
-  public Result<GiftPackGiftQueryReply> query(GiftPackGiftQueryRequest request) {
+  public Result<GiftPackSpecPageReply> page(GiftPackSpecPageRequest request) {
     return restTemplate
         .exchange(
-            GiftPackGiftQueryOps.Servlet.QUERY_MAPPING,
+            GiftPackSpecPageOps.Servlet.PAGE_MAPPING,
             HttpMethod.POST,
             new HttpEntity<>(request, createHttpHeaders()),
-            GIFT_QUERY_REPLY)
+            SPEC_PAGE_REPLY)
         .getBody();
   }
 
   @Override
-  public Result<GiftPackPackPageReply> page(GiftPackPackPageRequest request) {
+  public Result<GiftPackSpecQueryReply> query(GiftPackSpecQueryRequest request) {
     return restTemplate
         .exchange(
-            GiftPackPackPageOps.Servlet.PAGE_MAPPING,
+            GiftPackSpecQueryOps.Servlet.QUERY_MAPPING,
             HttpMethod.POST,
             new HttpEntity<>(request, createHttpHeaders()),
-            PACK_PAGE_REPLY)
+            SPEC_QUERY_REPLY)
         .getBody();
   }
 
-  @Override
-  public Result<GiftPackPackQueryReply> query(GiftPackPackQueryRequest request) {
-    return restTemplate
-        .exchange(
-            GiftPackPackQueryOps.Servlet.QUERY_MAPPING,
-            HttpMethod.POST,
-            new HttpEntity<>(request, createHttpHeaders()),
-            PACK_QUERY_REPLY)
-        .getBody();
-  }
-
-  @Override
-  public Result<GiftPackPackUseReply> use(GiftPackPackUseRequest request) {
-    return restTemplate
-        .exchange(
-            GiftPackPackUseOps.Servlet.USE_MAPPING,
-            HttpMethod.POST,
-            new HttpEntity<>(request, createHttpHeaders()),
-            PACK_USE_REPLY)
-        .getBody();
-  }
-
-  HttpHeaders createHttpHeaders() {
+  protected HttpHeaders createHttpHeaders() {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));

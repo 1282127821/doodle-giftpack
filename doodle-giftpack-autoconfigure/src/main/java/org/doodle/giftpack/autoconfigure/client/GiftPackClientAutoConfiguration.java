@@ -49,7 +49,7 @@ public class GiftPackClientAutoConfiguration {
     @ConditionalOnMissingBean
     public GiftPackClientRSocket giftPackClientRSocket(
         BrokerClientRSocketRequester requester, GiftPackClientProperties properties) {
-      return new BrokerGiftPackClientImpl(requester, properties);
+      return new BrokerGiftPackClient(requester, properties);
     }
   }
 }

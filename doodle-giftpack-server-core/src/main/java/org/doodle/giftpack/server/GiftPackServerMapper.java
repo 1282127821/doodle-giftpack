@@ -16,14 +16,5 @@
 package org.doodle.giftpack.server;
 
 import org.doodle.design.giftpack.GiftPackMapper;
-import org.doodle.design.giftpack.model.info.VisionInfo;
 
-public class GiftPackServerMapper extends GiftPackMapper {
-
-  public VisionInfo toPojo(GiftPackServerVisionEntity vision) {
-    return VisionInfo.builder()
-        .visionId(vision.getVisionId())
-        .description(vision.getDescription())
-        .build();
-  }
-}
+public class GiftPackServerMapper extends GiftPackMapper {}

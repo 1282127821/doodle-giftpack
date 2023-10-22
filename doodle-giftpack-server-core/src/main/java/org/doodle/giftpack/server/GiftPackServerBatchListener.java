@@ -16,13 +16,22 @@
 package org.doodle.giftpack.server;
 
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
+import org.springframework.data.mongodb.core.mapping.event.AfterConvertEvent;
 
-@Data
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@ConfigurationProperties(prefix = GiftPackServerProperties.PREFIX)
-public class GiftPackServerProperties {
-  public static final String PREFIX = "doodle.giftpack.server";
+@RequiredArgsConstructor
+public class GiftPackServerBatchListener
+    extends AbstractMongoEventListener<GiftPackServerBatchEntity> {
+  GiftPackServerBatchService batchService;
+
+  @Override
+  public void onAfterConvert(AfterConvertEvent<GiftPackServerBatchEntity> event) {
+    GiftPackServerBatchEntity batchEntity = event.getSource();
+    if (batchEntity.getBatchId() < 1) {
+      batchEntity.setBatchId(batchService.generateSeq());
+    }
+  }
 }

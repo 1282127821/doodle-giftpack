@@ -18,12 +18,10 @@ package org.doodle.giftpack.client;
 import org.doodle.design.giftpack.*;
 
 public interface GiftPackClientRSocket
-    extends GiftPackVisionQueryOps.RSocket,
-        GiftPackVisionPageOps.RSocket,
-        GiftPackGiftQueryOps.RSocket,
-        GiftPackGiftPageOps.RSocket,
-        GiftPackCodeQueryOps.RSocket,
-        GiftPackCodePageOps.RSocket,
-        GiftPackPackQueryOps.RSocket,
-        GiftPackPackPageOps.RSocket,
-        GiftPackPackUseOps.RSocket {}
+    extends GIftPackGroupQueryOps.RSocket,
+        GiftPackGroupPageOps.RSocket,
+        GiftPackBatchQueryOps.RSocket,
+        GiftPackBatchPageOps.RSocket,
+        GiftPackSpecQueryOps.RSocket,
+        GiftPackSpecPageOps.RSocket,
+        GiftPackRoleUseOps.RSocket {}

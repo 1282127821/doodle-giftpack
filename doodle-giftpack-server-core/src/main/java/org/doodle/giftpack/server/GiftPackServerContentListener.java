@@ -16,13 +16,22 @@
 package org.doodle.giftpack.server;
 
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
+import org.springframework.data.mongodb.core.mapping.event.AfterConvertEvent;
 
-@Data
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@ConfigurationProperties(prefix = GiftPackServerProperties.PREFIX)
-public class GiftPackServerProperties {
-  public static final String PREFIX = "doodle.giftpack.server";
+@RequiredArgsConstructor
+public class GiftPackServerContentListener
+    extends AbstractMongoEventListener<GiftPackServerContentEntity> {
+  GiftPackServerContentService contentService;
+
+  @Override
+  public void onAfterConvert(AfterConvertEvent<GiftPackServerContentEntity> event) {
+    GiftPackServerContentEntity contentEntity = event.getSource();
+    if (contentEntity.getContentId() < 1) {
+      contentEntity.setContentId(contentService.generateSeq());
+    }
+  }
 }

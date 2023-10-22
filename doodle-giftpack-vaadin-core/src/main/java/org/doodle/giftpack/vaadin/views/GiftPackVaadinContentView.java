@@ -13,22 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.doodle.giftpack.server;
+package org.doodle.giftpack.vaadin.views;
 
-import lombok.experimental.UtilityClass;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.RolesAllowed;
+import org.doodle.boot.vaadin.views.VaadinMainLayout;
 
-@UtilityClass
-public class GiftPackServerExceptions {
-
-  static class Query extends RuntimeException {
-    public Query(Throwable cause) {
-      super(cause);
-    }
-  }
-
-  static class Page extends RuntimeException {
-    public Page(Throwable cause) {
-      super(cause);
-    }
-  }
-}
+@RolesAllowed({"ROLE_ADMIN", "ROLE_GIFTPACK_ADMIN"})
+@Route(value = "giftpack-content", layout = VaadinMainLayout.class)
+public class GiftPackVaadinContentView extends VerticalLayout {}
