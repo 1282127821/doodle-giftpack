@@ -19,7 +19,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
-import org.springframework.data.mongodb.core.mapping.event.AfterConvertEvent;
+import org.springframework.data.mongodb.core.mapping.event.BeforeConvertEvent;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class GiftPackServerContentListener
   GiftPackServerContentService contentService;
 
   @Override
-  public void onAfterConvert(AfterConvertEvent<GiftPackServerContentEntity> event) {
+  public void onBeforeConvert(BeforeConvertEvent<GiftPackServerContentEntity> event) {
     GiftPackServerContentEntity contentEntity = event.getSource();
     if (contentEntity.getContentId() < 1) {
       contentEntity.setContentId(contentService.generateSeq());

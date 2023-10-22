@@ -19,7 +19,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
-import org.springframework.data.mongodb.core.mapping.event.AfterConvertEvent;
+import org.springframework.data.mongodb.core.mapping.event.BeforeConvertEvent;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class GiftPackServerBatchListener
   GiftPackServerBatchService batchService;
 
   @Override
-  public void onAfterConvert(AfterConvertEvent<GiftPackServerBatchEntity> event) {
+  public void onBeforeConvert(BeforeConvertEvent<GiftPackServerBatchEntity> event) {
     GiftPackServerBatchEntity batchEntity = event.getSource();
     if (batchEntity.getBatchId() < 1) {
       batchEntity.setBatchId(batchService.generateSeq());
