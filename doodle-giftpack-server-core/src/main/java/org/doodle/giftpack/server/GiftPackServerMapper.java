@@ -16,5 +16,51 @@
 package org.doodle.giftpack.server;
 
 import org.doodle.design.giftpack.GiftPackMapper;
+import org.doodle.design.giftpack.model.info.GiftPackBatchInfo;
+import org.doodle.design.giftpack.model.info.GiftPackContentInfo;
+import org.doodle.design.giftpack.model.info.GiftPackGroupInfo;
+import org.doodle.design.giftpack.model.info.GiftPackSpecInfo;
 
-public class GiftPackServerMapper extends GiftPackMapper {}
+public class GiftPackServerMapper extends GiftPackMapper {
+
+  public GiftPackContentInfo toPojo(GiftPackServerContentEntity contentEntity) {
+    return GiftPackContentInfo.builder()
+        .contentId(contentEntity.getContentId())
+        .content(contentEntity.getContent())
+        .build();
+  }
+
+  public GiftPackGroupInfo toPojo(
+      GiftPackServerGroupEntity groupEntity, GiftPackContentInfo contentInfo) {
+    return GiftPackGroupInfo.builder()
+        .groupId(groupEntity.getGroupId())
+        .groupCode(groupEntity.getGroupCode())
+        .contentInfo(contentInfo)
+        .lifecycleInfo(groupEntity.getLifecycle())
+        .build();
+  }
+
+  public GiftPackBatchInfo toPojo(
+      GiftPackServerBatchEntity batchEntity, GiftPackContentInfo contentInfo) {
+    return GiftPackBatchInfo.builder()
+        .batchId(batchEntity.getBatchId())
+        .batchSize(batchEntity.getBatchSize())
+        .contentInfo(contentInfo)
+        .lifecycleInfo(batchEntity.getLifecycle())
+        .build();
+  }
+
+  public GiftPackSpecInfo toPojo(
+      GiftPackServerSpecEntity specEntity, GiftPackContentInfo contentInfo) {
+    return GiftPackSpecInfo.builder()
+        .specId(specEntity.getSpecId())
+        .roleId(specEntity.getRoleId())
+        .contentInfo(contentInfo)
+        .lifecycleInfo(specEntity.getLifecycle())
+        .build();
+  }
+
+  public GiftPackServerRoleLogEntity toRoleLogEntity(GiftPackServerRoleLogId roleLogId) {
+    return GiftPackServerRoleLogEntity.builder().logId(roleLogId).build();
+  }
+}

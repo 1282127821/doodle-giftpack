@@ -20,6 +20,12 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class GiftPackServerExceptions {
 
+  static class Use extends RuntimeException {
+    public Use(Throwable cause) {
+      super(cause);
+    }
+  }
+
   static class Query extends RuntimeException {
     public Query(Throwable cause) {
       super(cause);

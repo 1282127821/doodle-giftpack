@@ -16,23 +16,20 @@
 package org.doodle.giftpack.server;
 
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Data
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@ConfigurationProperties(prefix = GiftPackServerProperties.PREFIX)
-public class GiftPackServerProperties {
-  public static final String PREFIX = "doodle.giftpack.server";
+@RequiredArgsConstructor
+public class GiftPackServerRoleService {
+  GiftPackServerMapper mapper;
+  GiftPackServerRoleLogRepo roleLogRepo;
 
-  Hashids hashids = new Hashids();
+  public boolean isLogExists(GiftPackServerRoleLogId roleLogId) {
+    return roleLogRepo.existsById(roleLogId);
+  }
 
-  int groupCodeMaxLength = 6;
-
-  @Data
-  @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-  public static class Hashids {
-    String salt = "doodle-giftpack-default-hashids-salt";
+  public void saveLog(GiftPackServerRoleLogId roleLogId) {
+    roleLogRepo.save(mapper.toRoleLogEntity(roleLogId));
   }
 }

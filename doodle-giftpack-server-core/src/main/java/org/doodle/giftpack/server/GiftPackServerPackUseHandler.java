@@ -15,24 +15,15 @@
  */
 package org.doodle.giftpack.server;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.experimental.FieldDefaults;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.doodle.design.giftpack.GiftPackType;
+import org.doodle.design.giftpack.model.info.GiftPackInfo;
 
-@Data
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@ConfigurationProperties(prefix = GiftPackServerProperties.PREFIX)
-public class GiftPackServerProperties {
-  public static final String PREFIX = "doodle.giftpack.server";
+@FunctionalInterface
+public interface GiftPackServerPackUseHandler {
 
-  Hashids hashids = new Hashids();
-
-  int groupCodeMaxLength = 6;
-
-  @Data
-  @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-  public static class Hashids {
-    String salt = "doodle-giftpack-default-hashids-salt";
+  default GiftPackType packType() {
+    return GiftPackType.UNRECOGNIZED;
   }
+
+  GiftPackInfo use(String roleId, String packCode);
 }

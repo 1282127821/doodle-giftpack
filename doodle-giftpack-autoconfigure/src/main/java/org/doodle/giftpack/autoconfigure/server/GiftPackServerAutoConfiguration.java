@@ -15,8 +15,10 @@
  */
 package org.doodle.giftpack.autoconfigure.server;
 
+import java.util.stream.Collectors;
 import org.doodle.broker.autoconfigure.client.BrokerClientAutoConfiguration;
 import org.doodle.giftpack.server.*;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,6 +35,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoAuditing
 @EnableMongoRepositories(
     basePackageClasses = {
+      GiftPackServerRoleLogRepo.class,
       GiftPackServerGroupRepo.class,
       GiftPackServerBatchRepo.class,
       GiftPackServerSpecRepo.class,
@@ -49,8 +52,10 @@ public class GiftPackServerAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public GiftPackServerContentService giftPackServerContentService(
-      MongoTemplate mongoTemplate, GiftPackServerContentRepo contentRepo) {
-    return new GiftPackServerContentService(mongoTemplate, contentRepo);
+      MongoTemplate mongoTemplate,
+      GiftPackServerMapper mapper,
+      GiftPackServerContentRepo contentRepo) {
+    return new GiftPackServerContentService(mongoTemplate, mapper, contentRepo);
   }
 
   @Bean
@@ -63,8 +68,13 @@ public class GiftPackServerAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public GiftPackServerGroupService giftPackServerGroupService(
-      MongoTemplate mongoTemplate, GiftPackServerGroupRepo groupRepo) {
-    return new GiftPackServerGroupService(mongoTemplate, groupRepo);
+      MongoTemplate mongoTemplate,
+      GiftPackServerMapper mapper,
+      GiftPackServerGroupRepo groupRepo,
+      GiftPackServerContentService contentService,
+      GiftPackServerRoleService roleService) {
+    return new GiftPackServerGroupService(
+        mongoTemplate, mapper, groupRepo, contentService, roleService);
   }
 
   @Bean
@@ -77,8 +87,13 @@ public class GiftPackServerAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public GiftPackServerBatchService giftPackServerBatchService(
-      MongoTemplate mongoTemplate, GiftPackServerBatchRepo batchRepo) {
-    return new GiftPackServerBatchService(mongoTemplate, batchRepo);
+      MongoTemplate mongoTemplate,
+      GiftPackServerMapper mapper,
+      GiftPackServerBatchRepo batchRepo,
+      GiftPackServerContentService contentService,
+      GiftPackServerPackService packService) {
+    return new GiftPackServerBatchService(
+        mongoTemplate, mapper, batchRepo, contentService, packService);
   }
 
   @Bean
@@ -91,8 +106,13 @@ public class GiftPackServerAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public GiftPackServerSpecService giftPackServerSpecService(
-      MongoTemplate mongoTemplate, GiftPackServerSpecRepo specRepo) {
-    return new GiftPackServerSpecService(mongoTemplate, specRepo);
+      MongoTemplate mongoTemplate,
+      GiftPackServerMapper mapper,
+      GiftPackServerSpecRepo specRepo,
+      GiftPackServerContentService contentService,
+      GiftPackServerPackService packService) {
+    return new GiftPackServerSpecService(
+        mongoTemplate, mapper, specRepo, contentService, packService);
   }
 
   @Bean
@@ -100,6 +120,31 @@ public class GiftPackServerAutoConfiguration {
   public GiftPackServerSpecListener giftPackServerSpecListener(
       GiftPackServerSpecService specService) {
     return new GiftPackServerSpecListener(specService);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerPackService giftPackServerPackService(GiftPackServerProperties properties) {
+    return new GiftPackServerPackService(properties);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerPackUseService giftPackServerPackUseService(
+      GiftPackServerPackService packService,
+      ObjectProvider<GiftPackServerPackUseHandler> provider) {
+    return new GiftPackServerPackUseService(
+        packService,
+        provider
+            .orderedStream()
+            .collect(Collectors.toMap(GiftPackServerPackUseHandler::packType, (v) -> v)));
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerRoleService giftPackServerRoleService(
+      GiftPackServerMapper mapper, GiftPackServerRoleLogRepo roleLogRepo) {
+    return new GiftPackServerRoleService(mapper, roleLogRepo);
   }
 
   @AutoConfiguration
@@ -133,6 +178,13 @@ public class GiftPackServerAutoConfiguration {
         GiftPackServerSpecService specService) {
       return new GiftPackServerSpecServletController(specService);
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerRoleServletController giftPackServerRoleServletController(
+        GiftPackServerPackUseService packUseService) {
+      return new GiftPackServerRoleServletController(packUseService);
+    }
   }
 
   @AutoConfiguration
@@ -163,6 +215,13 @@ public class GiftPackServerAutoConfiguration {
     public GiftPackServerSpecRSocketController giftPackServerSpecRSocketController(
         GiftPackServerMapper mapper, GiftPackServerSpecService specService) {
       return new GiftPackServerSpecRSocketController(mapper, specService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GiftPackServerRoleRSocketController giftPackServerRoleRSocketController(
+        GiftPackServerMapper mapper, GiftPackServerPackUseService packUseService) {
+      return new GiftPackServerRoleRSocketController(mapper, packUseService);
     }
   }
 }

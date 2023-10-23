@@ -15,21 +15,29 @@
  */
 package org.doodle.giftpack.server;
 
+import java.util.Collections;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.model.PageRequest;
 import org.doodle.design.giftpack.model.info.GiftPackContentInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GiftPackServerContentService extends GiftPackServerSeqService {
+  GiftPackServerMapper mapper;
   GiftPackServerContentRepo contentRepo;
 
   public GiftPackServerContentService(
-      MongoTemplate mongoTemplate, GiftPackServerContentRepo contentRepo) {
+      MongoTemplate mongoTemplate,
+      GiftPackServerMapper mapper,
+      GiftPackServerContentRepo contentRepo) {
     super(mongoTemplate, GiftPackServerContentEntity.COLLECTION);
+    this.mapper = mapper;
     this.contentRepo = contentRepo;
   }
 
@@ -38,7 +46,13 @@ public class GiftPackServerContentService extends GiftPackServerSeqService {
   }
 
   public List<GiftPackContentInfo> page(PageRequest pageRequest) {
-    return null;
+    Page<GiftPackServerContentEntity> page =
+        contentRepo.findAll(
+            Pageable.ofSize(pageRequest.getPageSize()).withPage(pageRequest.getPageNumber()));
+    List<GiftPackServerContentEntity> content = page.getContent();
+    return CollectionUtils.isEmpty(content)
+        ? Collections.emptyList()
+        : content.stream().map(mapper::toPojo).toList();
   }
 
   public Mono<GiftPackContentInfo> queryMono(long contentId) {
@@ -46,6 +60,6 @@ public class GiftPackServerContentService extends GiftPackServerSeqService {
   }
 
   public GiftPackContentInfo query(long contentId) {
-    return null;
+    return contentRepo.findById(contentId).map(mapper::toPojo).orElse(null);
   }
 }

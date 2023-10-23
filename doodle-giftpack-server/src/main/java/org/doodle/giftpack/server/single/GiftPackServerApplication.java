@@ -15,13 +15,54 @@
  */
 package org.doodle.giftpack.server.single;
 
+import java.util.UUID;
+import org.doodle.design.giftpack.model.info.GiftPackInfo;
+import org.doodle.giftpack.server.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GiftPackServerApplication {
+public class GiftPackServerApplication implements CommandLineRunner {
+
+  @Autowired GiftPackServerContentRepo contentRepo;
+
+  @Autowired GiftPackServerGroupRepo groupRepo;
+  @Autowired GiftPackServerGroupService groupService;
+
+  @Autowired GiftPackServerPackUseService packUseService;
 
   public static void main(String[] args) {
     SpringApplication.run(GiftPackServerApplication.class, args);
+  }
+
+  @Override
+  public void run(String... args) throws Exception {
+    //    GiftPackServerContentEntity contentEntity =
+    //        contentRepo.save(GiftPackServerContentEntity.builder().content("测试内容").build());
+    //    GiftPackServerGroupEntity groupEntity =
+    //        groupRepo.save(
+    //            GiftPackServerGroupEntity.builder()
+    //                .groupCode("VIP666")
+    //                .contentId(contentEntity.getContentId())
+    //                .lifecycle(
+    //                    GiftPackLifecycleInfo.builder()
+    //                        .start(Instant.now())
+    //                        .end(
+    //                            Instant.ofEpochMilli(
+    //                                System.currentTimeMillis() + Duration.ofHours(1).toMillis()))
+    //                        .build())
+    //                .build());
+
+    long now = System.currentTimeMillis();
+    for (int i = 0; i < 1000; i++) {
+      try {
+        GiftPackInfo packInfo = packUseService.use(UUID.randomUUID().toString(), "VIP666");
+      } catch (Exception e) {
+
+      }
+    }
+    System.out.println("消耗时间: " + (System.currentTimeMillis() - now));
   }
 }

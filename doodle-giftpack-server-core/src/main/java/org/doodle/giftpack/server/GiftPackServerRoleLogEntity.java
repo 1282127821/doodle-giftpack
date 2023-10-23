@@ -18,11 +18,8 @@ package org.doodle.giftpack.server;
 import java.time.LocalDateTime;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.doodle.design.giftpack.model.info.GiftPackLifecycleInfo;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -33,20 +30,11 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = GiftPackServerGroupEntity.COLLECTION)
-public class GiftPackServerGroupEntity {
-  public static final String COLLECTION = "giftpack-groups";
+@Document(collection = GiftPackServerRoleLogEntity.COLLECTION)
+public class GiftPackServerRoleLogEntity {
+  public static final String COLLECTION = "giftpack-role-logs";
 
-  @MongoId long groupId;
-
-  @Indexed(unique = true)
-  String groupCode;
-
-  long contentId;
-
-  GiftPackLifecycleInfo lifecycle;
-
-  @Version byte dummy;
+  @MongoId GiftPackServerRoleLogId logId;
 
   @CreatedDate LocalDateTime createdAt;
 
