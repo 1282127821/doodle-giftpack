@@ -119,9 +119,10 @@ public class GiftPackServerAutoConfiguration {
       GiftPackServerMapper mapper,
       GiftPackServerSpecRepo specRepo,
       GiftPackServerContentService contentService,
-      GiftPackServerPackService packService) {
+      GiftPackServerPackService packService,
+      GiftPackServerRoleService roleService) {
     return new GiftPackServerSpecService(
-        mongoTemplate, mapper, specRepo, contentService, packService);
+        mongoTemplate, mapper, specRepo, contentService, packService, roleService);
   }
 
   @Bean

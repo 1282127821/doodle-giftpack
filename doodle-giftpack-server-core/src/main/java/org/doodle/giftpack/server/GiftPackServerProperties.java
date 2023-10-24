@@ -28,7 +28,7 @@ public class GiftPackServerProperties {
 
   Hashids hashids = new Hashids();
 
-  int groupCodeMaxLength = 6;
+  int groupCodeMaxLength = 7;
 
   @Data
   @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)

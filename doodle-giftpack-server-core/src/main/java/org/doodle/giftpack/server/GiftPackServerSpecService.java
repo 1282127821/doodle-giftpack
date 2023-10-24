@@ -15,6 +15,8 @@
  */
 package org.doodle.giftpack.server;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import lombok.AccessLevel;
@@ -22,6 +24,7 @@ import lombok.experimental.FieldDefaults;
 import org.doodle.design.common.model.PageRequest;
 import org.doodle.design.giftpack.GiftPackType;
 import org.doodle.design.giftpack.model.info.GiftPackInfo;
+import org.doodle.design.giftpack.model.info.GiftPackLifecycleInfo;
 import org.doodle.design.giftpack.model.info.GiftPackSpecInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,18 +39,21 @@ public class GiftPackServerSpecService extends GiftPackServerSeqService
   GiftPackServerSpecRepo specRepo;
   GiftPackServerContentService contentService;
   GiftPackServerPackService packService;
+  GiftPackServerRoleService roleService;
 
   public GiftPackServerSpecService(
       MongoTemplate mongoTemplate,
       GiftPackServerMapper mapper,
       GiftPackServerSpecRepo specRepo,
       GiftPackServerContentService contentService,
-      GiftPackServerPackService packService) {
+      GiftPackServerPackService packService,
+      GiftPackServerRoleService roleService) {
     super(mongoTemplate, GiftPackServerSpecEntity.COLLECTION);
     this.mapper = mapper;
     this.specRepo = specRepo;
     this.contentService = contentService;
     this.packService = packService;
+    this.roleService = roleService;
   }
 
   @Override
@@ -57,7 +63,45 @@ public class GiftPackServerSpecService extends GiftPackServerSeqService
 
   @Override
   public GiftPackInfo use(String roleId, String packCode) {
-    return null;
+    long[] unpacked = packService.unpackHashIds(packCode);
+    long specId = unpacked[1];
+    long specIndex = unpacked[2];
+
+    if (specIndex != 0) {
+      throw new IllegalArgumentException("一次性码数量只能为1");
+    }
+
+    GiftPackServerSpecEntity specEntity = specRepo.findById(specId).orElseThrow();
+
+    GiftPackLifecycleInfo lifecycle = specEntity.getLifecycle();
+    Instant now = Instant.now();
+    if (Duration.between(lifecycle.getStart(), now).isNegative()
+        || Duration.between(now, lifecycle.getEnd()).isNegative()) {
+      throw new IllegalStateException("不在该礼包码有效期内 " + packCode);
+    }
+
+    if (!specEntity.getRoleId().equalsIgnoreCase(roleId)) {
+      throw new IllegalArgumentException("当前角色无法领取该一次性码");
+    }
+
+    GiftPackServerRoleLogId roleLogId =
+        GiftPackServerRoleLogId.builder()
+            .roleId(roleId)
+            .packCode(packCode)
+            .packType(GiftPackType.BATCH)
+            .packId(specId)
+            .packIndex(0)
+            .build();
+
+    if (roleService.isLogExists(roleLogId)) {
+      throw new IllegalStateException("已经领取该礼包码,不能重复领取");
+    }
+
+    roleService.saveLog(roleLogId);
+
+    return GiftPackInfo.builder()
+        .specInfo(mapper.toPojo(specEntity, contentService.query(specEntity.getContentId())))
+        .build();
   }
 
   public Mono<List<GiftPackSpecInfo>> pageMono(PageRequest pageRequest) {

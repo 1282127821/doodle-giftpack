@@ -15,6 +15,8 @@
  */
 package org.doodle.giftpack.server;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import lombok.AccessLevel;
@@ -23,6 +25,7 @@ import org.doodle.design.common.model.PageRequest;
 import org.doodle.design.giftpack.GiftPackType;
 import org.doodle.design.giftpack.model.info.GiftPackBatchInfo;
 import org.doodle.design.giftpack.model.info.GiftPackInfo;
+import org.doodle.design.giftpack.model.info.GiftPackLifecycleInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -71,6 +74,13 @@ public class GiftPackServerBatchService extends GiftPackServerSeqService
 
     if (batchIndex >= batchEntity.getBatchSize()) {
       throw new IllegalArgumentException("超过批量码生成数量 " + packCode);
+    }
+
+    GiftPackLifecycleInfo lifecycle = batchEntity.getLifecycle();
+    Instant now = Instant.now();
+    if (Duration.between(lifecycle.getStart(), now).isNegative()
+        || Duration.between(now, lifecycle.getEnd()).isNegative()) {
+      throw new IllegalStateException("不在该礼包码有效期内 " + packCode);
     }
 
     GiftPackServerRoleLogId roleLogId =
