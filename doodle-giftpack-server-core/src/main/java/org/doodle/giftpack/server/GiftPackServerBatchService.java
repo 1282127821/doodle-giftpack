@@ -34,20 +34,26 @@ public class GiftPackServerBatchService extends GiftPackServerSeqService
     implements GiftPackServerPackUseHandler {
   GiftPackServerMapper mapper;
   GiftPackServerBatchRepo batchRepo;
+  GiftPackServerBatchLogService batchLogService;
   GiftPackServerContentService contentService;
   GiftPackServerPackService packService;
+  GiftPackServerRoleService roleService;
 
   public GiftPackServerBatchService(
       MongoTemplate mongoTemplate,
       GiftPackServerMapper mapper,
       GiftPackServerBatchRepo batchRepo,
+      GiftPackServerBatchLogService batchLogService,
       GiftPackServerContentService contentService,
-      GiftPackServerPackService packService) {
+      GiftPackServerPackService packService,
+      GiftPackServerRoleService roleService) {
     super(mongoTemplate, GiftPackServerBatchEntity.COLLECTION);
     this.mapper = mapper;
     this.batchRepo = batchRepo;
+    this.batchLogService = batchLogService;
     this.contentService = contentService;
     this.packService = packService;
+    this.roleService = roleService;
   }
 
   @Override
@@ -58,7 +64,41 @@ public class GiftPackServerBatchService extends GiftPackServerSeqService
   @Override
   public GiftPackInfo use(String roleId, String packCode) {
     long[] unpacked = packService.unpackHashIds(packCode);
-    return null;
+    long batchId = unpacked[1];
+    long batchIndex = unpacked[2];
+
+    GiftPackServerBatchEntity batchEntity = batchRepo.findById(batchId).orElseThrow();
+
+    if (batchIndex >= batchEntity.getBatchSize()) {
+      throw new IllegalArgumentException("超过批量码生成数量 " + packCode);
+    }
+
+    GiftPackServerRoleLogId roleLogId =
+        GiftPackServerRoleLogId.builder()
+            .roleId(roleId)
+            .packCode(packCode)
+            .packType(GiftPackType.BATCH)
+            .packId(batchId)
+            .packIndex(batchIndex)
+            .build();
+
+    if (roleService.isLogExists(roleLogId)) {
+      throw new IllegalStateException("已经领取该礼包码,不能重复领取");
+    }
+
+    GiftPackServerBatchLogEntity batchLogEntity =
+        batchLogService.update(
+            GiftPackServerBatchLogId.builder().batchId(batchId).batchIndex(batchIndex).build());
+
+    if (batchLogEntity.getSeq() != 1) {
+      throw new IllegalStateException("已经被其他玩家领取");
+    }
+
+    roleService.saveLog(roleLogId);
+
+    return GiftPackInfo.builder()
+        .batchInfo(mapper.toPojo(batchEntity, contentService.query(batchEntity.getContentId())))
+        .build();
   }
 
   public Mono<List<GiftPackBatchInfo>> pageMono(PageRequest pageRequest) {

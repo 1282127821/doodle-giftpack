@@ -63,4 +63,8 @@ public class GiftPackServerMapper extends GiftPackMapper {
   public GiftPackServerRoleLogEntity toRoleLogEntity(GiftPackServerRoleLogId roleLogId) {
     return GiftPackServerRoleLogEntity.builder().logId(roleLogId).build();
   }
+
+  public GiftPackServerBatchLogEntity toBatchLogEntity(GiftPackServerBatchLogId batchLogId) {
+    return GiftPackServerBatchLogEntity.builder().logId(batchLogId).build();
+  }
 }

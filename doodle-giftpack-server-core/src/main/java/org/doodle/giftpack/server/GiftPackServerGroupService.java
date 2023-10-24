@@ -83,10 +83,9 @@ public class GiftPackServerGroupService extends GiftPackServerSeqService
 
     roleService.saveLog(roleLogId);
 
-    GiftPackInfo packInfo = GiftPackInfo.builder().build();
-    packInfo.setGroupInfo(
-        mapper.toPojo(groupEntity, contentService.query(groupEntity.getContentId())));
-    return packInfo;
+    return GiftPackInfo.builder()
+        .groupInfo(mapper.toPojo(groupEntity, contentService.query(groupEntity.getContentId())))
+        .build();
   }
 
   public Mono<List<GiftPackGroupInfo>> pageMono(PageRequest pageRequest) {

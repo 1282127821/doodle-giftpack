@@ -40,6 +40,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
       GiftPackServerBatchRepo.class,
       GiftPackServerSpecRepo.class,
       GiftPackServerContentRepo.class,
+      GiftPackServerBatchLogRepo.class,
     })
 public class GiftPackServerAutoConfiguration {
 
@@ -90,10 +91,18 @@ public class GiftPackServerAutoConfiguration {
       MongoTemplate mongoTemplate,
       GiftPackServerMapper mapper,
       GiftPackServerBatchRepo batchRepo,
+      GiftPackServerBatchLogService batchLogService,
       GiftPackServerContentService contentService,
-      GiftPackServerPackService packService) {
+      GiftPackServerPackService packService,
+      GiftPackServerRoleService roleService) {
     return new GiftPackServerBatchService(
-        mongoTemplate, mapper, batchRepo, contentService, packService);
+        mongoTemplate,
+        mapper,
+        batchRepo,
+        batchLogService,
+        contentService,
+        packService,
+        roleService);
   }
 
   @Bean
@@ -145,6 +154,13 @@ public class GiftPackServerAutoConfiguration {
   public GiftPackServerRoleService giftPackServerRoleService(
       GiftPackServerMapper mapper, GiftPackServerRoleLogRepo roleLogRepo) {
     return new GiftPackServerRoleService(mapper, roleLogRepo);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public GiftPackServerBatchLogService giftPackServerBatchLogService(
+      GiftPackServerMapper mapper, GiftPackServerBatchLogRepo batchLogRepo) {
+    return new GiftPackServerBatchLogService(mapper, batchLogRepo);
   }
 
   @AutoConfiguration

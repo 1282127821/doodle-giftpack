@@ -33,7 +33,8 @@ public class GiftPackServerPackService {
 
   public GiftPackServerPackService(GiftPackServerProperties properties) {
     Assert.hasText(properties.getHashids().getSalt(), "Hashids salt 不能为空");
-    this.hashids = new Hashids(properties.getHashids().getSalt());
+    this.hashids =
+        new Hashids(properties.getHashids().getSalt(), properties.getGroupCodeMaxLength() + 1);
     this.groupCodeMaxLength = properties.getGroupCodeMaxLength();
   }
 
